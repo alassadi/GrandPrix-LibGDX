@@ -11,6 +11,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture backGround;
 	Texture wellcome;
 	Texture userCar;
+	enum gamestate {
+		WelcomePage,
+		GamePage,
+		GameOver,
+	}
 	float userCarPositionX=200;
 	int choice = 0 ;
 	
@@ -31,6 +36,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+		switch (gamestate)
+		{
+			case
+		}
 		batch.draw(wellcome, 0, 0);
 		//batch.draw(backGround, 0, 0);
 
