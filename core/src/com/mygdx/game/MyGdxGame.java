@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
 
 public class MyGdxGame extends ApplicationAdapter {
+
 	SpriteBatch batch;
 	Texture backGround;
 	Texture wellcome;
@@ -127,4 +128,5 @@ public class MyGdxGame extends ApplicationAdapter {
 		backGround.dispose();
 		wellcome.dispose();
 	}
+
 }
