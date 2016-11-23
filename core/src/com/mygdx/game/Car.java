@@ -66,4 +66,14 @@ public class Car {
         //bounceAtEdge();
         //stopAtEdge();
     }
+    public void stopAtEdge(){
+        if (getX()>Gdx.graphics.getWidth()-sprite.getWidth())
+            setX(Gdx.graphics.getWidth()-sprite.getWidth());
+        if (getX()<0)
+            setX(0);
+        if (getY()>Gdx.graphics.getHeight()-sprite.getHeight())
+            setY(Gdx.graphics.getHeight()-sprite.getHeight());
+        if (getY()<0)
+            setY(0);
+    }
 }

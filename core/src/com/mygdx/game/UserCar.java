@@ -18,6 +18,7 @@ public class UserCar extends Car{
     public void updatePositionFromSpeed(){
         //First call the method "updatePositionFromSpeed" in the Figure super class
         super.updatePositionFromSpeed();
+        stopAtEdge();
 
 
     }

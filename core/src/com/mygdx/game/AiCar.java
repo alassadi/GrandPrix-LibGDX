@@ -1,14 +1,10 @@
 package com.mygdx.game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
     /**
      * Created by fatih on 2016-11-22.
      */
     public class AiCar extends Car {
-
-        int carSpeed=0;
 
 
         public AiCar(String textureFileName, float x, float y){

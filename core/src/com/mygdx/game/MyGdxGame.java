@@ -12,6 +12,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture backGround;
 	Texture wellcome;
+	Texture gameover;
 	UserCar userCar;
 	Gamestate gamestate = Gamestate.WelcomePage;
 	float userCarPositionX = 450f;
@@ -35,6 +36,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		wellcome = new Texture("WellComePage.jpg") ;
 		batch = new SpriteBatch();
 		backGround= new Texture("BackGround.jpg");
+		gameover = new Texture("game-over.jpg");
 		createUserCar();
 		createAiCar();
 
@@ -120,7 +122,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 			case GameOver:
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+				batch.draw(gameover, 450, 290);
 				break;
 
 		}
@@ -133,6 +135,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.dispose();
 		backGround.dispose();
 		wellcome.dispose();
+		gameover.dispose();
 	}
 
 }
