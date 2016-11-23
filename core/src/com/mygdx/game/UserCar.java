@@ -30,27 +30,34 @@ public class UserCar extends Car{
     public void goUp(){
 
         setSpeedX(0);
-        setSpeedY(3);
+        setSpeedY(2);
         getSprite().setFlip(false, false);
         getSprite().setRotation(90);
     }
 
     public void goDown(){
         setSpeedX(0);
-        setSpeedY(-3);
+        setSpeedY(-2);
         getSprite().setFlip(false, false);
         getSprite().setRotation(-90);
     }
+    public void goZawieh()
+    {
+        getSprite().setRotation(-30);
+        setSpeedX(2);
+        setSpeedY(-1);
+
+    }
 
     public void goLeft(){
-        setSpeedX(-3);
+        setSpeedX(-2);
         setSpeedY(0);
         getSprite().setFlip(getSpeedX()<0, false);
         getSprite().setRotation(0);
     }
 
     public void goRight(){
-        setSpeedX(3);
+        setSpeedX(2);
         setSpeedY(0);
         getSprite().setFlip(getSpeedX()<0, false);
         getSprite().setRotation(0);

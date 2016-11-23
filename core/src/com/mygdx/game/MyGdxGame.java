@@ -14,9 +14,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture wellcome;
 	UserCar userCar;
 	Gamestate gamestate = Gamestate.WelcomePage;
-	float carSpeed = 50.0f;
 	float userCarPositionX = 450f;
 	float userCarPositionY = 620f;
+	AiCar aiCar;
+	float aiCarPositionX = 450f;
+	float aiCarPositionY = 660f;
 
 
 
@@ -34,14 +36,18 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		backGround= new Texture("BackGround.jpg");
 		createUserCar();
-
+		createAiCar();
 
 	}
 
 	public void createUserCar()
 	{
 		userCar = new UserCar("userCar1.png",userCarPositionX,userCarPositionY );
+	}
 
+	public void createAiCar()
+	{
+		aiCar=new AiCar("AiCar1.png",aiCarPositionX,aiCarPositionY);
 	}
 
 	/*
@@ -77,8 +83,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 	@Override
 	public void render () {
-		//Gdx.gl.glClearColor(1, 0, 0, 1);
-		//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 		switch (gamestate)
@@ -97,19 +101,21 @@ public class MyGdxGame extends ApplicationAdapter {
 			case GamePage:
 
 				batch.draw(backGround, 0, 0);
-				//batch.draw(userCar, userCarPositionX, userCarPositionY , width, height  );
 				checkInput();
 				userCar.getSprite().draw(batch);
 				userCar.updatePositionFromSpeed();
+				aiCar.getSprite().draw(batch);
+				aiCar.updatePositionFromSpeed();
+				aiCar.Route();
+				userCar.getSprite().draw(batch);
+				userCar.updatePositionFromSpeed();
 
+				// exit game
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 				{
 					gamestate = Gamestate.GameOver;
 				}
-				//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				//batch.begin();
-				//batch.draw(userCar, (int)userCarPositionX, (int)userCarPositionY);
-				//gamestate = Gamestate.GameOver;
+
 				break;
 
 			case GameOver:
