@@ -13,8 +13,9 @@ package com.mygdx.game;
             getSprite().setOriginCenter();
         }
         public void updatePositionFromSpeed() {
-            //First call the method "updatePositionFromSpeed" in the Figure super class
+            //First call the method "updatePositionFromSpeed" in the Car super class
             super.updatePositionFromSpeed();
+            // Since we control the track of the ai car, no need to use stop at the edge method.
         }
 
         public void Route() {
@@ -125,7 +126,6 @@ package com.mygdx.game;
                 setSpeedY(3);
 
             }
-
             if (getSprite().getY() >280 && getSprite().getX() == 549) {
                 getSprite().setRotation(120);
                 setSpeedX(-1);

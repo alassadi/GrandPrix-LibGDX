@@ -8,16 +8,17 @@ public class UserCar extends Car{
 
 
     public UserCar(String textureFileName, float x, float y){
-        //First call the parent class constructor (Figure)
+        //First call the parent class constructor (Car)
         super(textureFileName, x, y);
 
-        //We want to rotate the graphics around the center when pacman turns up and down.
+        //We want to rotate the graphics around the center when the user car turns up and down.
         getSprite().setOriginCenter();
     }
 
     public void updatePositionFromSpeed(){
-        //First call the method "updatePositionFromSpeed" in the Figure super class
+        //First call the method "updatePositionFromSpeed" in the Car super class
         super.updatePositionFromSpeed();
+        // Making sure that the user car cannot go out the borders
         stopAtEdge();
 
 
@@ -31,34 +32,27 @@ public class UserCar extends Car{
     public void goUp(){
 
         setSpeedX(0);
-        setSpeedY(2);
+        setSpeedY(3);
         getSprite().setFlip(false, false);
         getSprite().setRotation(90);
     }
 
     public void goDown(){
         setSpeedX(0);
-        setSpeedY(-2);
+        setSpeedY(-3);
         getSprite().setFlip(false, false);
         getSprite().setRotation(-90);
     }
-    public void goZawieh()
-    {
-        getSprite().setRotation(-30);
-        setSpeedX(2);
-        setSpeedY(-1);
-
-    }
 
     public void goLeft(){
-        setSpeedX(-2);
+        setSpeedX(-3);
         setSpeedY(0);
         getSprite().setFlip(getSpeedX()<0, false);
         getSprite().setRotation(0);
     }
 
     public void goRight(){
-        setSpeedX(2);
+        setSpeedX(3);
         setSpeedY(0);
         getSprite().setFlip(getSpeedX()<0, false);
         getSprite().setRotation(0);

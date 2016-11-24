@@ -1,7 +1,6 @@
 package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Gdx;
 /**
  * Created by Abdulrahman on 11/22/2016.
@@ -62,10 +61,10 @@ public class Car {
         setX(getX()+getSpeedX());
         setY(getY()+getSpeedY());
 
-        //What should we do when we get to the screen edge? Bounce or stop?
-        //bounceAtEdge();
-        //stopAtEdge();
     }
+
+    // Making sure that the user car cannot go outside the borders of the game window.
+
     public void stopAtEdge(){
         if (getX()>Gdx.graphics.getWidth()-sprite.getWidth())
             setX(Gdx.graphics.getWidth()-sprite.getWidth());

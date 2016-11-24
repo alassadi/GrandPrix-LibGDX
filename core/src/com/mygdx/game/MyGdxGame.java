@@ -95,6 +95,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
 					gamestate = Gamestate.GamePage;
 				}
+				// if escape key was pressed in the welcome page
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 					gamestate = Gamestate.GameOver;
 				}
@@ -109,15 +110,12 @@ public class MyGdxGame extends ApplicationAdapter {
 				aiCar.getSprite().draw(batch);
 				aiCar.updatePositionFromSpeed();
 				aiCar.Route();
-				userCar.getSprite().draw(batch);
-				userCar.updatePositionFromSpeed();
 
 				// exit game
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 				{
 					gamestate = Gamestate.GameOver;
 				}
-
 				break;
 
 			case GameOver:
