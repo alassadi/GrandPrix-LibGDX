@@ -44,12 +44,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public void createUserCar()
 	{
-		userCar = new UserCar("userCar1.png",userCarPositionX,userCarPositionY );
+		userCar = new UserCar("userCar1.png",userCarPositionX,userCarPositionY,4 );
 	}
 
 	public void createAiCar()
 	{
-		aiCar=new AiCar("AiCar1.png",aiCarPositionX,aiCarPositionY);
+		aiCar = new AiCar("AiCar1.png",aiCarPositionX,aiCarPositionY);
 	}
 
 	/*
@@ -68,21 +68,22 @@ public class MyGdxGame extends ApplicationAdapter {
 	*/
 	public void checkInput(){
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-			userCar.goUp();
+			userCar.accelerate();
 
 		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-			userCar.goDown();
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+			userCar.breaks();
 		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			userCar.goLeft();
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			userCar.turnLeft();
 		}
 
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			userCar.goRight();
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			userCar.turnRight();
 		}
-		else userCar.fullStop();
+		userCar.deceleration();
 	}
+
 	@Override
 	public void render () {
 		batch.begin();
@@ -91,11 +92,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		{
 			case WelcomePage:
 
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.draw(wellcome, 0, 0);
+				// if enter key is pressed in the welcome page it will go to game page
 				if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
 					gamestate = Gamestate.GamePage;
 				}
-				// if escape key was pressed in the welcome page
+				// if escape key was pressed in the welcome page it will got to the game over page
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 					gamestate = Gamestate.GameOver;
 				}
@@ -106,7 +109,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				batch.draw(backGround, 0, 0);
 				checkInput();
 				userCar.getSprite().draw(batch);
-				userCar.updatePositionFromSpeed();
+				userCar.updatePosition();
 				aiCar.getSprite().draw(batch);
 				aiCar.updatePositionFromSpeed();
 				aiCar.Route();
@@ -114,6 +117,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				// exit game
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 				{
+					Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 					gamestate = Gamestate.GameOver;
 				}
 				break;
@@ -121,6 +125,13 @@ public class MyGdxGame extends ApplicationAdapter {
 			case GameOver:
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.draw(gameover, 450, 290);
+				createUserCar();
+				createAiCar();
+				if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+				{
+					Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+					gamestate = Gamestate.WelcomePage;
+				}
 				break;
 
 		}

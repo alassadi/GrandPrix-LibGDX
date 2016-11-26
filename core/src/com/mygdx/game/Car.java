@@ -9,6 +9,8 @@ public class Car {
 
     private int speedX = 0;
     private int speedY = 0;
+    private double angle = Math.PI*2 ;
+    private float velocity = 0;
     private Sprite sprite;
 
 
@@ -50,14 +52,39 @@ public class Car {
     public int getSpeedX() {
         return speedX;
     }
+    public void setVelocity(float velocity)
+    {
+        this.velocity = velocity;
+    }
+    public float getVelocity ()
+    {
+        return velocity;
+    }
+    public double getAngle ()
+    {
+        return angle;
+    }
+    public void setAngle (double angle)
+    {
+        this.angle = angle;
+    }
+    public void updatePosition()
+    {
+        if(getVelocity()==0)
+            return;
+        setX(getX() + velocity * (float)Math.cos(angle));
+        setY(getY() + velocity * (float)Math.sin(angle));
+        stopAtEdge();
+    }
 
     public void setSpeedX(int xSpeed) {
         this.speedX = xSpeed;
     }
 
     public void updatePositionFromSpeed(){
-        if (getSpeedX()==0 && getSpeedY()==0)
+        if (getSpeedX()==0 && getSpeedY()==0) {
             return;
+        }
         setX(getX()+getSpeedX());
         setY(getY()+getSpeedY());
 

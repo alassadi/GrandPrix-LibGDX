@@ -16,6 +16,7 @@ package com.mygdx.game;
             //First call the method "updatePositionFromSpeed" in the Car super class
             super.updatePositionFromSpeed();
             // Since we control the track of the ai car, no need to use stop at the edge method.
+            stopAtEdge();
         }
 
         public void Route() {

@@ -6,57 +6,57 @@ package com.mygdx.game;
 public class UserCar extends Car{
 
 
+    double rotationRate = Math.PI / 50;
+    private double maxSpeed;
 
-    public UserCar(String textureFileName, float x, float y){
+    public UserCar(String textureFileName, float x, float y, double maxSpeed){
         //First call the parent class constructor (Car)
         super(textureFileName, x, y);
+        this.maxSpeed = maxSpeed;
 
         //We want to rotate the graphics around the center when the user car turns up and down.
         getSprite().setOriginCenter();
     }
 
-    public void updatePositionFromSpeed(){
+    /*public void updatePositionFromSpeed(){
         //First call the method "updatePositionFromSpeed" in the Car super class
         super.updatePositionFromSpeed();
         // Making sure that the user car cannot go out the borders
         stopAtEdge();
 
-
     }
-    public void fullStop()
+    */
+    public void updatePosition()
     {
-        setSpeedX(0);
-        setSpeedY(0);
+        super.updatePosition();
+    }
+    public void deceleration()
+    {
+        if (getVelocity() > 0)
+            setVelocity(getVelocity()-(float)0.02);
     }
 
-    public void goUp(){
-
-        setSpeedX(0);
-        setSpeedY(3);
-        getSprite().setFlip(false, false);
-        getSprite().setRotation(90);
+    public void accelerate()
+    {
+        if (this.getVelocity()<maxSpeed)
+            setVelocity(this.getVelocity() + (float) 0.05);
     }
-
-    public void goDown(){
-        setSpeedX(0);
-        setSpeedY(-3);
-        getSprite().setFlip(false, false);
-        getSprite().setRotation(-90);
+    public void breaks()
+    {
+        if (getVelocity() > 0)
+            setVelocity(getVelocity() - (float) 0.05);
     }
-
-    public void goLeft(){
-        setSpeedX(-3);
-        setSpeedY(0);
-        getSprite().setFlip(getSpeedX()<0, false);
-        getSprite().setRotation(0);
+    public void turnLeft()
+    {
+        setAngle(getAngle() + rotationRate);
+        getSprite().setRotation((float)getAngle() * (float)57.3);
+        deceleration();
     }
-
-    public void goRight(){
-        setSpeedX(3);
-        setSpeedY(0);
-        getSprite().setFlip(getSpeedX()<0, false);
-        getSprite().setRotation(0);
+    public void turnRight()
+    {
+        setAngle(getAngle() - rotationRate);
+        getSprite().setRotation((float)getAngle() * (float)57.3);
+        deceleration();
     }
-
 
 }
