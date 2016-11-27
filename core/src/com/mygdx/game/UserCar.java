@@ -6,7 +6,7 @@ package com.mygdx.game;
 public class UserCar extends Car{
 
 
-    double rotationRate = Math.PI / 50;
+    double rotationRate = Math.PI / 70; // how fast it turns
     private double maxSpeed;
 
     public UserCar(String textureFileName, float x, float y, double maxSpeed){
@@ -50,13 +50,14 @@ public class UserCar extends Car{
     {
         setAngle(getAngle() + rotationRate);
         getSprite().setRotation((float)getAngle() * (float)57.3);
-        deceleration();
+        breaks();
     }
     public void turnRight()
     {
         setAngle(getAngle() - rotationRate);
         getSprite().setRotation((float)getAngle() * (float)57.3);
-        deceleration();
+        breaks();
     }
+
 
 }

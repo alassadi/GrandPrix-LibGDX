@@ -2,6 +2,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 /**
  * Created by Abdulrahman on 11/22/2016.
  */
@@ -12,7 +13,7 @@ public class Car {
     private double angle = Math.PI*2 ;
     private float velocity = 0;
     private Sprite sprite;
-
+    private final int SHRINK_COLLISION_RADIUS;
 
     public Car (String textureFileName, float x, float y)
     {
@@ -20,6 +21,7 @@ public class Car {
         sprite.setSize(60,40);
         sprite.setX(x);
         sprite.setY(y);
+        SHRINK_COLLISION_RADIUS = 1;
     }
 
     public Sprite getSprite() {
@@ -101,5 +103,17 @@ public class Car {
             setY(Gdx.graphics.getHeight()-sprite.getHeight());
         if (getY()<0)
             setY(0);
+    }
+
+    public Rectangle getCollisionRectangle(){
+        return new Rectangle(
+                getSprite().getX()+SHRINK_COLLISION_RADIUS,
+                getSprite().getY()+SHRINK_COLLISION_RADIUS,
+                getSprite().getWidth()-(2*SHRINK_COLLISION_RADIUS),
+                getSprite().getHeight()-(2*SHRINK_COLLISION_RADIUS));
+    }
+
+    public boolean collidesWith(Rectangle otherRect){
+        return getCollisionRectangle().overlaps(otherRect);
     }
 }
