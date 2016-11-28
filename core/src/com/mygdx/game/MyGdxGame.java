@@ -21,10 +21,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	AiCar aiCar;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
-	ArrayList<Obstacle> obstacles;
-	int [] arr = new int[10];
-
-	Obstacle obstacle, obstacle1, obstacle2, obstacle3;
+	ArrayList<Obstacle> checkpoints =  new ArrayList<>();
+	int [] arr = new int[7];
+	int count = 0;
+	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 
 	private enum Gamestate {
 		WelcomePage,
@@ -41,7 +41,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		gameover = new Texture("game-over.jpg");
 		createUserCar();
 		createAiCar();
-		createObstacles();
+		createCheckPoints();
 	}
 
 	public void createUserCar() {
@@ -55,7 +55,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void checkInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			userCar.accelerate();
-
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			userCar.breaks();
@@ -109,15 +108,15 @@ public class MyGdxGame extends ApplicationAdapter {
 		checkInput();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
-		for (Obstacle obstacle : obstacles) {
-			obstacle.draw(batch);
+		for (Obstacle checkpoint : checkpoints) {
+			checkpoint.draw(batch);
 		}
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
 		aiCar.updatePositionFromSpeed();
 		aiCar.Route();
-		checkObstacleCollision(userCar);
+		checkRoutePoints(userCar);
 
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -141,42 +140,53 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.end();
 	}
 
-	public void createObstacles()
+	public void createCheckPoints()
 	{
-		obstacles = new ArrayList<>();
-		obstacle = new Obstacle("wall_1.jpg", 550 , 160, 96,5);
-		obstacle1 = new Obstacle("wall_0.jpg", 800 , 64, 5,96);
-		obstacle2 = new Obstacle("wall_0.jpg", 450 , 615, 5,96);
-		obstacle3 = new Obstacle("wall_0.jpg", 300 , 285, 5,90);
-		obstacles.add(obstacle);
-		obstacles.add(obstacle1);
-		obstacles.add(obstacle2);
-		obstacles.add(obstacle3);
+		checkpoint = new Obstacle("wall_0.jpg", 450 , 615, 5,96);
+		checkpoint1 = new Obstacle("wall_0.jpg", 800 , 615, 5,96);
+		checkpoint2 = new Obstacle("wall_1.jpg", 550 , 160, 96,5);
+		checkpoint3 = new Obstacle("wall_0.jpg", 800 , 64, 5,96);
+		checkpoint4 = new Obstacle("wall_0.jpg", 300 , 285, 5,90);
+		checkpoint5 = new Obstacle("wall_1.jpg", 900 , 370, 96,5);
+		checkpoint6 = new Obstacle("wall_1.jpg", 105 , 500, 96,5);
+		checkpoints.add(checkpoint);
+		checkpoints.add(checkpoint1);
+		checkpoints.add(checkpoint2);
+		checkpoints.add(checkpoint3);
+		checkpoints.add(checkpoint4);
+		checkpoints.add(checkpoint5);
+		checkpoints.add(checkpoint6);
 	}
 
-	public void checkObstacleCollision(UserCar userCar){
-		for (int x = 0 ; x <2 ; x++) {
-			if (userCar.collidesWith(obstacle.getCollisionRectangle())){
+	public void checkRoutePoints(UserCar userCar){
+			for (int i = 0 ; i < checkpoints.size() ; i ++)
+			{
+				if (userCar.collidesWith(checkpoints.get(i).getCollisionRectangle())){
 
-				arr[0] = 1; // if the next is 0 set to zero else set one
-							// to make sure the start last point is counted at the end not the first
+					arr[i] = 1; // if the next is 0 set to zero else set one
+					//		 to make sure the start last point is counted at the end not the first
+				}
+			}
+
+
+			if((arr[0] == 1) && (arr[1] == 1)&& (arr[2] == 1)&& (arr[3] == 1)&& (arr[4] == 1)&& (arr[5] == 1)&& (arr[6] == 1)) {
+
+				count = count+1;
+				for(int i = 0; i < arr.length ; i++)
+				{
+					arr[i] = 0;
+				}
+
 
 			}
-			if (userCar.collidesWith(obstacle1.getCollisionRectangle())){
 
-				arr[1] = 1;
-			}
-			if (userCar.collidesWith(obstacle2.getCollisionRectangle())){
+			if(count == 1)
+				System.out.println("done with 1 lap " + (count));
+			if (count == 2)
+				System.out.println(" lab 2 " + (count));
+			if (count == 3)
+				System.out.println("lab 3    " + count);
 
-				arr[2] = 1;
-			}
-			if (userCar.collidesWith(obstacle3.getCollisionRectangle())){
-
-				arr[3] = 1;
-			}
-			if((arr[0] == 1) && (arr[1] == 1)&& (arr[2] == 1)&& (arr[3] == 1))
-				System.out.println("done");
-		}
 	}
 
 	@Override

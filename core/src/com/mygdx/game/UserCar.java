@@ -30,6 +30,7 @@ public class UserCar extends Car{
     {
         super.updatePosition();
     }
+
     public void deceleration()
     {
         if (getVelocity() > 0)
@@ -57,6 +58,11 @@ public class UserCar extends Car{
         setAngle(getAngle() - rotationRate);
         getSprite().setRotation((float)getAngle() * (float)57.3);
         breaks();
+    }
+    public void fullStop()
+    {
+        setVelocity(0);
+
     }
 
 
