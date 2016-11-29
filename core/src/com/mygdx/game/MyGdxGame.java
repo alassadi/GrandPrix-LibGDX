@@ -24,11 +24,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	ArrayList<Obstacle> checkpoints;
 	ArrayList<Obstacle> finishline;
 	int [] arr = new int[7];
-	int [] arr1 = new int[7];
-	int [] arr2 = new int[7];
 	int numberOfLaps = 0;
 	boolean finishlineStatus = false ;
-	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6, finishline1;
+	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
+	Obstacle finishline1;
 
 	private enum Gamestate {
 		WelcomePage,
