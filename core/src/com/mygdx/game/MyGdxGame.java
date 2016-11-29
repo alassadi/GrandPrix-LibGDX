@@ -21,13 +21,13 @@ public class MyGdxGame extends ApplicationAdapter {
 	AiCar aiCar;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
-	ArrayList<Obstacle> checkpoints =  new ArrayList<Obstacle>();
-	ArrayList<Obstacle> outSideItems=new ArrayList<Obstacle>();
+	ArrayList<Obstacle> checkpoints = new ArrayList<Obstacle>();
+	ArrayList<Obstacle> outSideItems= new ArrayList<Obstacle>();
 	int [] arr = new int[7];
 	int count = 0;
-	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6,tire1,tire2,
+	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
+	Obstacle tire1,tire2,
 			tire3,tree1;
-
 
 
 
