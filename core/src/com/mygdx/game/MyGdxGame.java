@@ -114,14 +114,15 @@ public class MyGdxGame extends ApplicationAdapter {
 		checkInput();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
+		for (Obstacle checkpoint : checkpoints) {
+			checkpoint.draw(batch);
+		}
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
 		aiCar.updatePositionFromSpeed();
 		aiCar.Route();
-		for (Obstacle checkpoint : checkpoints) {
-			checkpoint.draw(batch);
-		}
+
 		for (Obstacle  outSideItem: outSideItems) {
 			outSideItem.draw(batch);
 		}
