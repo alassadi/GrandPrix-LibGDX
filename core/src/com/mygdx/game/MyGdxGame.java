@@ -21,15 +21,20 @@ public class MyGdxGame extends ApplicationAdapter {
 	AiCar aiCar;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
-	ArrayList<Obstacle> checkpoints = new ArrayList<Obstacle>();
+	ArrayList<Obstacle> checkpoints ;
 	ArrayList<Obstacle> outSideItems= new ArrayList<Obstacle>();
+	ArrayList<Obstacle> finishline;
 	int [] arr = new int[7];
-	int count = 0;
+	int numberOfLaps = 0;
+	boolean finishlineStatus = false ;
 	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
+
 	Obstacle tire1,tire2,
 			tire3,tree1;
 
 
+
+	Obstacle finishline1;
 
 	private enum Gamestate {
 		WelcomePage,
@@ -48,6 +53,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		createAiCar();
 		createCheckPoints();
 		createObstacles();
+
 	}
 
 	public void createUserCar() {
@@ -112,11 +118,17 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public void renderGamePage() {
 		checkInput();
+		createCheckPoints();
+		createFinishLine();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
 		for (Obstacle checkpoint : checkpoints) {
 			checkpoint.draw(batch);
 		}
+		for (Obstacle finishline11 : finishline) {
+			finishline11.draw(batch);
+		}
+
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -165,13 +177,14 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public void createCheckPoints()
 	{
+		checkpoints = new ArrayList<Obstacle>();
 		checkpoint = new Obstacle("wall_0.jpg", 450 , 615, 5,96);
 		checkpoint1 = new Obstacle("wall_0.jpg", 800 , 615, 5,96);
 		checkpoint2 = new Obstacle("wall_1.jpg", 550 , 160, 96,5);
 		checkpoint3 = new Obstacle("wall_0.jpg", 800 , 64, 5,96);
 		checkpoint4 = new Obstacle("wall_0.jpg", 300 , 285, 5,90);
-		checkpoint5 = new Obstacle("wall_1.jpg", 900 , 370, 96,5);
-		checkpoint6 = new Obstacle("wall_1.jpg", 105 , 500, 96,5);
+		checkpoint6 = new Obstacle("wall_1.jpg", 900 , 370, 96,5);
+		checkpoint5 = new Obstacle("wall_1.jpg", 105 , 500, 96,5);
 		checkpoints.add(checkpoint);
 		checkpoints.add(checkpoint1);
 		checkpoints.add(checkpoint2);
@@ -181,45 +194,92 @@ public class MyGdxGame extends ApplicationAdapter {
 		checkpoints.add(checkpoint6);
 	}
 	//If collides with Obstacle
-	public void checkObstacles(UserCar userCar){
-		for (int i=0; i<outSideItems.size(); i++){
-			if (userCar.collidesWith(outSideItems.get(i).getCollisionRectangle())){
+	public void checkObstacles(UserCar userCar) {
+		for (int i = 0; i < outSideItems.size(); i++) {
+			if (userCar.collidesWith(outSideItems.get(i).getCollisionRectangle())) {
 				userCar.fullStop();
 			}
 		}
 	}
-
-	public void checkRoutePoints(UserCar userCar){
-			for (int i = 0 ; i < checkpoints.size() ; i ++)
-			{
-				if (userCar.collidesWith(checkpoints.get(i).getCollisionRectangle())){
-
-					arr[i] = 1; // if the next is 0 set to zero else set one
-					//		 to make sure the start last point is counted at the end not the first
-				}
-			}
-
-
-			if((arr[0] == 1) && (arr[1] == 1)&& (arr[2] == 1)&& (arr[3] == 1)&& (arr[4] == 1)&& (arr[5] == 1)&& (arr[6] == 1)) {
-
-				count = count+1;
-				for(int i = 0; i < arr.length ; i++)
-				{
-					arr[i] = 0;
-				}
-
-
-			}
-
-			if(count == 1)
-				System.out.println("done with 1 lap " + (count));
-			if (count == 2)
-				System.out.println(" lab 2 " + (count));
-			if (count == 3)
-				System.out.println("lab 3    " + count);
+	public void createFinishLine()
+	{
+		finishline = new ArrayList<Obstacle>(1);
+		finishline1 = new Obstacle("wall_0.jpg", 660 , 615, 5,96);
+		finishline.add(finishline1);
 
 	}
 
+	public boolean checkFinishLine(int [] arr)
+	{
+		if(checkArray(arr))
+		{
+			if (userCar.collidesWith(finishline.get(0).getCollisionRectangle()))
+			{
+				for (int i = 0; i < arr.length; i++) {
+					arr[i] = 0;
+				}
+				System.out.println("done with lap");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean checkArray(int [] arr)
+	{
+		if((arr[0] == 1) && (arr[1] == 1)&& (arr[2] == 1)&& (arr[3] == 1)&& (arr[4] == 1)&& (arr[5] == 1)&& (arr[6] == 1))
+			return true;
+		else return false;
+	}
+
+	public void checkRoutePoints(UserCar userCar){
+
+			for (int j = 0 ; j < checkpoints.size() ;j++) {
+				if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
+
+					arr[j] = 1; // if the next is 0 set to zero else set one
+					//		 to make sure the start last point is counted at the end not the first
+
+					}
+			}
+
+		if(checkArray(arr))
+		{
+			if (checkFinishLine(arr)) {
+
+				numberOfLaps++;
+
+				if (numberOfLaps == 1)
+					System.out.println("done with 1 lap " + (numberOfLaps));
+				else if (numberOfLaps == 2)
+					System.out.println(" lab 2 " + (numberOfLaps));
+				else if (numberOfLaps == 3)
+					System.out.println("lab 3    " + numberOfLaps);
+
+
+			}
+
+		}
+
+
+	}
+
+	/*public void checkRoutePoints(UserCar userCar)
+	{	int i = 0;
+		for(Obstacle checkpoin : checkpoints){
+			if(userCar.collidesWith(checkpoin.getCollisionRectangle())){
+				arr[i] = 1;
+			}
+			i++;
+			if(checkArray(arr))
+			{
+				System.out.println("lab done");
+				arr= new int []{0,0,0,0,0,0,0};
+			}
+		}
+
+	}
+*/
 	@Override
 	public void dispose () {
 		batch.dispose();
