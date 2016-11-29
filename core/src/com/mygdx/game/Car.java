@@ -21,7 +21,7 @@ public class Car {
         sprite.setSize(60,40);
         sprite.setX(x);
         sprite.setY(y);
-        SHRINK_COLLISION_RADIUS = 2;
+        SHRINK_COLLISION_RADIUS = 6;
     }
 
     public Sprite getSprite() {
@@ -107,10 +107,10 @@ public class Car {
 
     public Rectangle getCollisionRectangle(){
         return new Rectangle(
-                getSprite().getX()+SHRINK_COLLISION_RADIUS,
-                getSprite().getY()+SHRINK_COLLISION_RADIUS,
-                getSprite().getWidth()-(2*SHRINK_COLLISION_RADIUS),
-                getSprite().getHeight()-(2*SHRINK_COLLISION_RADIUS));
+                getSprite().getX(),
+                getSprite().getY(),
+                getSprite().getWidth(),
+                getSprite().getHeight());
     }
 
     public boolean collidesWith(Rectangle otherRect){

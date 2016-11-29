@@ -18,14 +18,7 @@ public class UserCar extends Car{
         getSprite().setOriginCenter();
     }
 
-    /*public void updatePositionFromSpeed(){
-        //First call the method "updatePositionFromSpeed" in the Car super class
-        super.updatePositionFromSpeed();
-        // Making sure that the user car cannot go out the borders
-        stopAtEdge();
 
-    }
-    */
     public void updatePosition()
     {
         super.updatePosition();
