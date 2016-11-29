@@ -21,7 +21,7 @@ public class Car {
         sprite.setSize(60,40);
         sprite.setX(x);
         sprite.setY(y);
-        SHRINK_COLLISION_RADIUS = 2;
+        SHRINK_COLLISION_RADIUS =5;
     }
 
     public Sprite getSprite() {

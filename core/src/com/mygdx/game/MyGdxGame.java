@@ -21,10 +21,15 @@ public class MyGdxGame extends ApplicationAdapter {
 	AiCar aiCar;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
-	ArrayList<Obstacle> checkpoints =  new ArrayList<>();
+	ArrayList<Obstacle> checkpoints =  new ArrayList<Obstacle>();
+	ArrayList<Obstacle> outSideItems=new ArrayList<Obstacle>();
 	int [] arr = new int[7];
 	int count = 0;
-	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
+	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6,tire1,tire2,
+			tire3,tree1;
+
+
+
 
 	private enum Gamestate {
 		WelcomePage,
@@ -42,6 +47,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		createUserCar();
 		createAiCar();
 		createCheckPoints();
+		createObstacles();
 	}
 
 	public void createUserCar() {
@@ -108,15 +114,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		checkInput();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
-		for (Obstacle checkpoint : checkpoints) {
-			checkpoint.draw(batch);
-		}
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
 		aiCar.updatePositionFromSpeed();
 		aiCar.Route();
+		for (Obstacle checkpoint : checkpoints) {
+			checkpoint.draw(batch);
+		}
+		for (Obstacle  outSideItem: outSideItems) {
+			outSideItem.draw(batch);
+		}
+
 		checkRoutePoints(userCar);
+		checkObstacles(userCar);
 
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -139,6 +150,17 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		batch.end();
 	}
+	public void createObstacles(){
+
+		tire1=new Obstacle("Tire1.png",300,100,90,40);
+		outSideItems.add(tire1);
+		tire2=new Obstacle("Tire2.png",50,450,40,80);
+		outSideItems.add(tire2);
+		tire3=new Obstacle("Tire1.png",400,720,90,40);
+		outSideItems.add(tire3);
+		tree1=new Obstacle ("tree.png",390,200,80,80);
+		outSideItems.add(tree1);
+	}
 
 	public void createCheckPoints()
 	{
@@ -156,6 +178,14 @@ public class MyGdxGame extends ApplicationAdapter {
 		checkpoints.add(checkpoint4);
 		checkpoints.add(checkpoint5);
 		checkpoints.add(checkpoint6);
+	}
+	//If collides with Obstacle
+	public void checkObstacles(UserCar userCar){
+		for (int i=0; i<outSideItems.size(); i++){
+			if (userCar.collidesWith(outSideItems.get(i).getCollisionRectangle())){
+				userCar.fullStop();
+			}
+		}
 	}
 
 	public void checkRoutePoints(UserCar userCar){
