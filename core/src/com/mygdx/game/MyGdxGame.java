@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,8 +30,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	boolean finishlineStatus = false ;
 	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 	Obstacle finishline1;
-	private Sound intro;
-	private Sound ingame ;
+	private Music intro;
+	private Music ingame ;
 
 	private enum Gamestate {
 		WelcomePage,
@@ -45,6 +46,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		backGround = new Texture("BackGround.jpg");
 		gameover = new Texture("game-over.jpg");
+		intro = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
+		ingame = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
 		createUserCar();
 		createAiCar();
 
@@ -99,12 +102,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(wellcome, 0, 0);
-		intro = Gdx.audio.newSound(Gdx.files.internal("data/mymusic.mp3"));
+
+		//
+		//long id = ingame.play();
+		//ingame.setLooping(id, true);
 		intro.play();
-		// if enter key is pressed in the welcome page it will go to game page
+		//if enter key is pressed in the welcome page it will go to game page
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-			intro.stop();
+
 			gamestate = Gamestate.GamePage;
+			intro.stop();
 		}
 		// if escape key was pressed in the welcome page it will got to the game over page
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -116,6 +123,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 	public void renderGamePage() {
+		ingame.play();
 		checkInput();
 		createCheckPoints();
 		createFinishLine();
@@ -127,8 +135,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (Obstacle finishline11 : finishline) {
 			finishline11.draw(batch);
 		}
-		ingame = Gdx.audio.newSound(Gdx.files.internal("data/mymusic1.mp3"));
-		ingame.play();
+
+
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -142,6 +150,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			ingame.stop();
 			gamestate = Gamestate.GameOver;
 		}
+
 
 		batch.end();
 	}
