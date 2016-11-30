@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
-import com.sun.codemodel.internal.JLabel;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,23 +66,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		backGround = new Texture("BackGround.jpg");
 		gameover = new Texture("game-over.jpg");
 		gplogo= new Texture("Gplogo.png");
-
-
 		board = new Texture("Board.png");
 		font=new BitmapFont();
 		font.setColor(Color.WHITE);
-
-
-
-
 		createUserCar();
 		createAiCar();
 		createCheckPoints();
 		createObstacles();
-
-
-
-
 	}
 
 	public void createUserCar() {
@@ -94,8 +84,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	//Timer
-
-
 	public void checkInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			userCar.accelerate();
@@ -157,13 +145,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.draw(backGround, 0, 0);
 		batch.draw(gplogo,300,450,300,100);
 		batch.draw(board, 50,20,400,200);
-
 		//timer
 		font.draw(batch,driver,70,200);
-
-
-
-
 
 		for (Obstacle checkpoint : checkpoints) {
 			checkpoint.draw(batch);
@@ -184,7 +167,6 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		checkRoutePoints(userCar);
 		checkObstacles(userCar);
-
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
