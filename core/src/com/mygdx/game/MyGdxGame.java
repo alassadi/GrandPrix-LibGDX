@@ -2,10 +2,14 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import com.sun.codemodel.internal.JLabel;
+
 import java.util.ArrayList;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -15,10 +19,12 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture wellcome;
 	Texture gameover;
 	UserCar userCar;
+	Texture board;
 	Gamestate gamestate = Gamestate.WelcomePage;
 	float userCarPositionX = 550f;
 	float userCarPositionY = 620f;
 	AiCar aiCar;
+	Texture gplogo;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
 	ArrayList<Obstacle> checkpoints ;
@@ -29,12 +35,23 @@ public class MyGdxGame extends ApplicationAdapter {
 	boolean finishlineStatus = false ;
 	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 
-	Obstacle tire1,tire2,
-			tire3,tree1;
+	Obstacle tire1,tire2, tire3,tire4,
+			tree1,tree2,tree3,tree4;
 
 
 
 	Obstacle finishline1;
+
+	//Timer
+	Timer timer =new Timer();
+
+	BitmapFont timeFont;
+	CharSequence str="Abood ";
+	CharSequence millis;
+	long a;
+
+
+
 
 	private enum Gamestate {
 		WelcomePage,
@@ -49,10 +66,22 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		backGround = new Texture("BackGround.jpg");
 		gameover = new Texture("game-over.jpg");
+		gplogo= new Texture("Gplogo.png");
+
+
+		board = new Texture("Board.png");
+		timeFont=new BitmapFont();// Text on display
+		millis=timer.formatTime(a);
+
+
+
 		createUserCar();
 		createAiCar();
 		createCheckPoints();
 		createObstacles();
+
+
+
 
 	}
 
@@ -63,6 +92,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void createAiCar() {
 		aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
 	}
+
+	//Timer
+
 
 	public void checkInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -122,6 +154,17 @@ public class MyGdxGame extends ApplicationAdapter {
 		createFinishLine();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
+		batch.draw(gplogo,300,450,300,100);
+		batch.draw(board, 50,20,400,200);
+
+		//timer
+		timeFont.draw(batch,str,70,200);
+		timeFont.draw(batch,millis,100,100);
+
+
+
+
+
 		for (Obstacle checkpoint : checkpoints) {
 			checkpoint.draw(batch);
 		}
@@ -165,14 +208,23 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 	public void createObstacles(){
 
-		tire1=new Obstacle("Tire1.png",300,100,90,40);
+		tire1=new Obstacle("Tire1.png",410,230,90,37);
 		outSideItems.add(tire1);
-		tire2=new Obstacle("Tire2.png",50,450,40,80);
+		tire2=new Obstacle("Tire2.png",45,380,37,200);
 		outSideItems.add(tire2);
-		tire3=new Obstacle("Tire1.png",400,720,90,40);
+		tire3=new Obstacle("Tire3.png",400,725,400,37);
 		outSideItems.add(tire3);
-		tree1=new Obstacle ("tree.png",390,200,80,80);
+		tire4=new Obstacle("Tire1.png",320,230,90,37);
+		outSideItems.add(tire4);
+		tree1=new Obstacle ("tree.png",1050,350,100,100);
 		outSideItems.add(tree1);
+		tree2=new Obstacle("Tree1.png",650,200,200,60);
+		outSideItems.add(tree2);
+		tree3=new Obstacle("tree.png",690,450,90,80);
+		outSideItems.add(tree3);
+		tree4=new Obstacle("tree.png",690,350,90,80);
+		outSideItems.add(tree4);
+
 	}
 
 	public void createCheckPoints()
