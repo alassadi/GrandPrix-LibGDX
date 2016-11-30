@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,6 +29,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	boolean finishlineStatus = false ;
 	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 	Obstacle finishline1;
+	private Sound intro;
+	private Sound ingame ;
 
 	private enum Gamestate {
 		WelcomePage,
@@ -96,12 +99,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(wellcome, 0, 0);
+		intro = Gdx.audio.newSound(Gdx.files.internal("data/mymusic.mp3"));
+		intro.play();
 		// if enter key is pressed in the welcome page it will go to game page
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+			intro.stop();
 			gamestate = Gamestate.GamePage;
 		}
 		// if escape key was pressed in the welcome page it will got to the game over page
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			intro.stop();
 			gamestate = Gamestate.GameOver;
 		}
 		batch.end();
@@ -120,7 +127,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (Obstacle finishline11 : finishline) {
 			finishline11.draw(batch);
 		}
-
+		ingame = Gdx.audio.newSound(Gdx.files.internal("data/mymusic1.mp3"));
+		ingame.play();
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -131,6 +139,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			ingame.stop();
 			gamestate = Gamestate.GameOver;
 		}
 
@@ -252,6 +261,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		backGround.dispose();
 		wellcome.dispose();
 		gameover.dispose();
+		intro.dispose();
+		ingame.dispose();
+
+
 	}
 
 }
