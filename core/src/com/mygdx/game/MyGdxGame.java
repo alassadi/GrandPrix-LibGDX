@@ -4,15 +4,16 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
-import com.sun.codemodel.internal.JLabel;
 
 import java.util.ArrayList;
-import java.util.Date;
+
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -43,10 +44,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 	Obstacle finishline1;
+	private Music intro;
+	private Music ingame ;
 
-	CharSequence driver="Abood";
+	static CharSequence driver = " ";
 
-	private BitmapFont font;
+	 BitmapFont font;
 
 
 
@@ -65,6 +68,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		backGround = new Texture("BackGround.jpg");
 		gameover = new Texture("game-over.jpg");
+
 		gplogo= new Texture("Gplogo.png");
 
 
@@ -73,16 +77,12 @@ public class MyGdxGame extends ApplicationAdapter {
 		font.setColor(Color.WHITE);
 
 
-
-
+		intro = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
+		ingame = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
 		createUserCar();
 		createAiCar();
 		createCheckPoints();
 		createObstacles();
-
-
-
-
 	}
 
 	public void createUserCar() {
@@ -92,9 +92,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void createAiCar() {
 		aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
 	}
-
-	//Timer
-
 
 	public void checkInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -137,12 +134,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(wellcome, 0, 0);
-		// if enter key is pressed in the welcome page it will go to game page
+
+		//
+		//long id = ingame.play();
+		//ingame.setLooping(id, true);
+		intro.play();
+		//if enter key is pressed in the welcome page it will go to game page
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+
 			gamestate = Gamestate.GamePage;
+			intro.stop();
 		}
 		// if escape key was pressed in the welcome page it will got to the game over page
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			intro.stop();
 			gamestate = Gamestate.GameOver;
 		}
 		batch.end();
@@ -150,6 +155,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 	public void renderGamePage() {
+		ingame.play();
 		checkInput();
 		createCheckPoints();
 		createFinishLine();
@@ -157,21 +163,15 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.draw(backGround, 0, 0);
 		batch.draw(gplogo,300,450,300,100);
 		batch.draw(board, 50,20,400,200);
-
-		//timer
 		font.draw(batch,driver,70,200);
-
-
-
-
-
+		//timer
 		for (Obstacle checkpoint : checkpoints) {
 			checkpoint.draw(batch);
 		}
 		for (Obstacle finishline11 : finishline) {
 			finishline11.draw(batch);
 		}
-
+		
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -188,8 +188,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			ingame.stop();
 			gamestate = Gamestate.GameOver;
 		}
+
 
 		batch.end();
 	}
@@ -360,11 +362,25 @@ public class MyGdxGame extends ApplicationAdapter {
 				numberOfLaps++;
 
 				if (numberOfLaps == 1)
+				{
 					System.out.println("done with 1 lap " + (numberOfLaps));
+					driver = "done with lap 1";
+
+				}
+
 				else if (numberOfLaps == 2)
+				{
 					System.out.println(" lab 2 " + (numberOfLaps));
+					driver = "done with lap 2";
+
+				}
 				else if (numberOfLaps == 3)
-					System.out.println("lab 3    " + numberOfLaps);
+				{
+					System.out.println(" lab 3 " + (numberOfLaps));
+					driver = "done with lap 3";
+					// HERE IS WHERE THE CAR FINISH THE RACE
+
+				}
 
 
 			}
@@ -396,6 +412,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		backGround.dispose();
 		wellcome.dispose();
 		gameover.dispose();
+		intro.dispose();
+		ingame.dispose();
+
+
 	}
 
 
