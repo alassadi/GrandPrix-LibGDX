@@ -4,13 +4,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
-
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -37,20 +37,12 @@ public class MyGdxGame extends ApplicationAdapter {
 	boolean finishlineStatus = false ;
 	Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 
-	Obstacle tire1,tire2, tire3,tire4,
-			tree1,tree2,tree3,tree4;
-
-
-
+	Obstacle tire1,tire2, tire3,tire4, tree1,tree2,tree3,tree4;
 	Obstacle finishline1;
-
+	private Music intro;
+	private Music ingame ;
 	CharSequence driver="Abood";
-
 	private BitmapFont font;
-
-
-
-
 
 	private enum Gamestate {
 		WelcomePage,
@@ -58,17 +50,21 @@ public class MyGdxGame extends ApplicationAdapter {
 		GameOver
 	}
 
-
 	@Override
 	public void create() {
 		wellcome = new Texture("WellComePage.jpg");
 		batch = new SpriteBatch();
 		backGround = new Texture("BackGround.jpg");
 		gameover = new Texture("game-over.jpg");
+
 		gplogo= new Texture("Gplogo.png");
 		board = new Texture("Board.png");
 		font=new BitmapFont();
 		font.setColor(Color.WHITE);
+
+		intro = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
+		ingame = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
+
 		createUserCar();
 		createAiCar();
 		createCheckPoints();
@@ -116,7 +112,6 @@ public class MyGdxGame extends ApplicationAdapter {
 			case GameOver:
 				renderGameOver();
 				break;
-
 		}
 	}
 
@@ -125,12 +120,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(wellcome, 0, 0);
-		// if enter key is pressed in the welcome page it will go to game page
+
+		//
+		//long id = ingame.play();
+		//ingame.setLooping(id, true);
+		intro.play();
+		//if enter key is pressed in the welcome page it will go to game page
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+
 			gamestate = Gamestate.GamePage;
+			intro.stop();
 		}
 		// if escape key was pressed in the welcome page it will got to the game over page
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			intro.stop();
 			gamestate = Gamestate.GameOver;
 		}
 		batch.end();
@@ -138,6 +141,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 	public void renderGamePage() {
+		ingame.play();
 		checkInput();
 		createCheckPoints();
 		createFinishLine();
@@ -155,6 +159,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			finishline11.draw(batch);
 		}
 
+
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -170,8 +175,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			ingame.stop();
 			gamestate = Gamestate.GameOver;
 		}
+
 
 		batch.end();
 	}
@@ -378,6 +385,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		backGround.dispose();
 		wellcome.dispose();
 		gameover.dispose();
+		intro.dispose();
+		ingame.dispose();
+
+
 	}
 
 
