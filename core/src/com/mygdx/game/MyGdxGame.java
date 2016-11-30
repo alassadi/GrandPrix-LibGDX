@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.Input;
 import com.sun.codemodel.internal.JLabel;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -42,13 +44,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	Obstacle finishline1;
 
-	//Timer
-	Timer timer =new Timer();
+	CharSequence driver="Abood";
 
-	BitmapFont timeFont;
-	CharSequence str="Abood ";
-	CharSequence millis;
-	long a;
+	private BitmapFont font;
+
 
 
 
@@ -70,8 +69,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 		board = new Texture("Board.png");
-		timeFont=new BitmapFont();// Text on display
-		millis=timer.formatTime(a);
+		font=new BitmapFont();
+		font.setColor(Color.WHITE);
+
 
 
 
@@ -132,6 +132,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 	}
 
+
 	public void renderWelcomePage() {
 		batch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -158,8 +159,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.draw(board, 50,20,400,200);
 
 		//timer
-		timeFont.draw(batch,str,70,200);
-		timeFont.draw(batch,millis,100,100);
+		font.draw(batch,driver,70,200);
 
 
 
@@ -206,6 +206,64 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		batch.end();
 	}
+
+
+
+
+
+	//Timer
+	private final long nanosPerMilli = 1000000;
+	private long startTime = 0;
+	private long stopTime = 0;
+	private boolean running=true;
+
+	public void start(){
+		this.startTime=System.nanoTime();
+		this.running=true;
+	}
+	public void stop(){
+		this.stopTime=System.nanoTime();
+		this.running=false;
+	}
+	public void reset(){
+		this.startTime=0;
+		this.stopTime=0;
+		this.running=false;
+	}
+	//get elapsed milliseconds
+	public long getElapsedMilliseconds() {
+		long elapsed;
+		if (running) {
+			elapsed = System.nanoTime() - startTime;
+		} else {
+			elapsed = stopTime - startTime;
+		}
+		return elapsed / nanosPerMilli;
+	}
+	public String formatTime(final long millis){
+		int minutesComponent = (int) (millis/(1000*60));
+		int secondsComponent =(int) ((millis/1000) % 60);
+		int hunderdthsComponent=(int) ((millis/10) %100);
+		String paddedMinutes = String.format("%02d",minutesComponent);
+		String paddedSeconds = String.format("%02d",secondsComponent);
+		String paddedHunderths = String.format("%02d",hunderdthsComponent);
+		String formattedTime;
+		if (millis>0 && millis<3600000){
+			formattedTime = paddedMinutes+":"+paddedSeconds+":"+paddedHunderths;
+		}
+		else {
+			formattedTime=59+":"+59+":"+99;
+		}
+		return formattedTime;
+	}
+	//get formatted elapsed time
+	public String getElapsed(){
+		String timeFormatted="";
+		timeFormatted = this.formatTime(this.getElapsedMilliseconds());
+		return timeFormatted;
+	}
+
+	//Obstacle
 	public void createObstacles(){
 
 		tire1=new Obstacle("Tire1.png",410,230,90,37);
@@ -339,5 +397,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		wellcome.dispose();
 		gameover.dispose();
 	}
+
 
 }
