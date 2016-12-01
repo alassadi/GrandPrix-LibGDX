@@ -41,7 +41,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	Obstacle finishline1;
 	private Music intro;
 	private Music ingame ;
-	CharSequence driver="Abood";
+	CharSequence driver=" ";
 	private BitmapFont font;
 
 	private enum Gamestate {
@@ -387,8 +387,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		gameover.dispose();
 		intro.dispose();
 		ingame.dispose();
-
-
 	}
 
 
