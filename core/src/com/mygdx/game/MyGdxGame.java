@@ -10,9 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Input;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -41,8 +40,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	Obstacle finishline1;
 	private Music intro;
 	private Music ingame ;
-	CharSequence driver=" ";
-	private BitmapFont font;
+
+	static CharSequence driver = " ";
+
+	BitmapFont font;
+
 
 	private enum Gamestate {
 		WelcomePage,
@@ -149,6 +151,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.draw(backGround, 0, 0);
 		batch.draw(gplogo,300,450,300,100);
 		batch.draw(board, 50,20,400,200);
+
 		//timer
 		font.draw(batch,driver,70,200);
 
@@ -158,8 +161,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (Obstacle finishline11 : finishline) {
 			finishline11.draw(batch);
 		}
-
-
+		
 		userCar.getSprite().draw(batch);
 		userCar.updatePosition();
 		aiCar.getSprite().draw(batch);
@@ -349,11 +351,25 @@ public class MyGdxGame extends ApplicationAdapter {
 				numberOfLaps++;
 
 				if (numberOfLaps == 1)
+				{
 					System.out.println("done with 1 lap " + (numberOfLaps));
+					driver = "done with lap 1";
+
+				}
+
 				else if (numberOfLaps == 2)
+				{
 					System.out.println(" lab 2 " + (numberOfLaps));
+					driver = "done with lap 2";
+
+				}
 				else if (numberOfLaps == 3)
-					System.out.println("lab 3    " + numberOfLaps);
+				{
+					System.out.println(" lab 3 " + (numberOfLaps));
+					driver = "done with lap 3";
+					// HERE IS WHERE THE CAR FINISH THE RACE
+
+				}
 
 
 			}
