@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+
 /**
  * Created by Abdulrahman on 11/22/2016.
  */
@@ -57,6 +60,12 @@ public class UserCar extends Car{
         setVelocity(0);
 
     }
+    public void slowOnGrass()
+    {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            setVelocity(1);
+        }
 
+    }
 
 }

@@ -9,10 +9,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -30,8 +33,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture gplogo;
 	float aiCarPositionX = 450f;
 	float aiCarPositionY = 660f;
+	Random rand=new Random();
 	ArrayList<Obstacle> checkpoints ;
 	ArrayList<Obstacle> outSideItems= new ArrayList<Obstacle>();
+	ArrayList<Obstacle> slowOnGrass = new ArrayList<Obstacle>();
+
 	ArrayList<Obstacle> finishline;
 	int [] arr = new int[7];
 	int numberOfLaps = 0;
@@ -41,6 +47,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	Obstacle tire1,tire2, tire3,tire4,
 			tree1,tree2,tree3,tree4;
 
+	Obstacle grass1,grass2,grass3,grass4,grass5,grass6,grass7,grass8,
+			grass9,grass10,grass11,grass12,grass13,grass14,grass15;
 
 
 	Obstacle finishline1;
@@ -50,8 +58,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	static CharSequence driver = " ";
 
 	 BitmapFont font;
-
-
 
 
 
@@ -83,6 +89,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		createAiCar();
 		createCheckPoints();
 		createObstacles();
+		createGrass();
 	}
 
 	public void createUserCar() {
@@ -161,10 +168,17 @@ public class MyGdxGame extends ApplicationAdapter {
 		createFinishLine();
 		batch.begin();
 		batch.draw(backGround, 0, 0);
+		for (Obstacle grass: slowOnGrass){
+
+			grass.draw(batch);
+		}
+		checkGrass(userCar);
+
 		batch.draw(gplogo,300,450,300,100);
+
 		batch.draw(board, 50,20,400,200);
 		font.draw(batch,driver,70,200);
-		//timer
+
 		for (Obstacle checkpoint : checkpoints) {
 			checkpoint.draw(batch);
 		}
@@ -178,12 +192,15 @@ public class MyGdxGame extends ApplicationAdapter {
 		aiCar.updatePositionFromSpeed();
 		aiCar.Route();
 
+
+
 		for (Obstacle  outSideItem: outSideItems) {
 			outSideItem.draw(batch);
 		}
 
 		checkRoutePoints(userCar);
 		checkObstacles(userCar);
+
 
 		// exit game
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -212,59 +229,6 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 
-
-	//Timer
-	private final long nanosPerMilli = 1000000;
-	private long startTime = 0;
-	private long stopTime = 0;
-	private boolean running=true;
-
-	public void start(){
-		this.startTime=System.nanoTime();
-		this.running=true;
-	}
-	public void stop(){
-		this.stopTime=System.nanoTime();
-		this.running=false;
-	}
-	public void reset(){
-		this.startTime=0;
-		this.stopTime=0;
-		this.running=false;
-	}
-	//get elapsed milliseconds
-	public long getElapsedMilliseconds() {
-		long elapsed;
-		if (running) {
-			elapsed = System.nanoTime() - startTime;
-		} else {
-			elapsed = stopTime - startTime;
-		}
-		return elapsed / nanosPerMilli;
-	}
-	public String formatTime(final long millis){
-		int minutesComponent = (int) (millis/(1000*60));
-		int secondsComponent =(int) ((millis/1000) % 60);
-		int hunderdthsComponent=(int) ((millis/10) %100);
-		String paddedMinutes = String.format("%02d",minutesComponent);
-		String paddedSeconds = String.format("%02d",secondsComponent);
-		String paddedHunderths = String.format("%02d",hunderdthsComponent);
-		String formattedTime;
-		if (millis>0 && millis<3600000){
-			formattedTime = paddedMinutes+":"+paddedSeconds+":"+paddedHunderths;
-		}
-		else {
-			formattedTime=59+":"+59+":"+99;
-		}
-		return formattedTime;
-	}
-	//get formatted elapsed time
-	public String getElapsed(){
-		String timeFormatted="";
-		timeFormatted = this.formatTime(this.getElapsedMilliseconds());
-		return timeFormatted;
-	}
-
 	//Obstacle
 	public void createObstacles(){
 
@@ -276,14 +240,49 @@ public class MyGdxGame extends ApplicationAdapter {
 		outSideItems.add(tire3);
 		tire4=new Obstacle("Tire1.png",320,230,90,37);
 		outSideItems.add(tire4);
-		tree1=new Obstacle ("tree.png",1050,350,100,100);
+		tree1=new Obstacle ("tree.png",1020,350,100,100);
 		outSideItems.add(tree1);
 		tree2=new Obstacle("Tree1.png",650,200,200,60);
 		outSideItems.add(tree2);
-		tree3=new Obstacle("tree.png",690,450,90,80);
+		tree3=new Obstacle("tree.png",690,480,90,80);
 		outSideItems.add(tree3);
-		tree4=new Obstacle("tree.png",690,350,90,80);
+		tree4=new Obstacle("tree.png",690,380,90,80);
 		outSideItems.add(tree4);
+
+	}
+	public void createGrass()
+	{
+		grass1=new Obstacle("grass.png",0,0,510,230);
+		slowOnGrass.add(grass1);
+		grass2=new Obstacle("grass.png",510,0,770,55);
+		slowOnGrass.add(grass2);
+		grass3=new Obstacle("grass.png",1190,55,100,700);
+		slowOnGrass.add(grass3);
+		grass4=new Obstacle("grass.png",640,170,380,25);
+		slowOnGrass.add(grass4);
+		grass5=new Obstacle("grass.png",640,260,220,100);
+		slowOnGrass.add(grass5);
+		grass6=new Obstacle("grass.png",780,305,80,270);
+		slowOnGrass.add(grass6);
+		grass7=new Obstacle("grass.png",245,390,430,210);
+		slowOnGrass.add(grass7);
+		grass8=new Obstacle("grass.png",680,585,340,15);
+		slowOnGrass.add(grass8);
+		grass9=new Obstacle("grass.png",800,725,370,20);
+		slowOnGrass.add(grass9);
+		grass10=new Obstacle("grass.png",0,725,380,20);
+		slowOnGrass.add(grass10);
+		grass11=new Obstacle("grass.png",0,590,90,130);
+		slowOnGrass.add(grass11);
+		grass12=new Obstacle("grass.png",0,230,90,130);
+		slowOnGrass.add(grass12);
+		grass13=new Obstacle("grass.png",100,240,200,40);
+		slowOnGrass.add(grass13);
+		grass14=new Obstacle("grass.png",1020,300,150,40);
+		slowOnGrass.add(grass14);
+		grass15=new Obstacle("grass.png",1020,430,150,40);
+		slowOnGrass.add(grass15);
+
 
 	}
 
@@ -310,6 +309,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (int i = 0; i < outSideItems.size(); i++) {
 			if (userCar.collidesWith(outSideItems.get(i).getCollisionRectangle())) {
 				userCar.fullStop();
+			}
+		}
+	}
+	public void checkGrass(UserCar userCar){
+		for (int i=0; i<slowOnGrass.size(); i++){
+			if (userCar.collidesWith(slowOnGrass.get(i).getCollisionRectangle())){
+				userCar.slowOnGrass();
 			}
 		}
 	}
