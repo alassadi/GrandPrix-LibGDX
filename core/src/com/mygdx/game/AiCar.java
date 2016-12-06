@@ -1,15 +1,11 @@
 package com.mygdx.game;
-
-
 /**
  * Created by fatih on 2016-11-22.
  */
 public class AiCar extends Car {
 
-
     public AiCar(String textureFileName, float x, float y) {
         super(textureFileName, x, y);
-
         getSprite().setOriginCenter();
     }
 
@@ -187,14 +183,6 @@ public class AiCar extends Car {
             setSpeedY(1);
 
         }
-        /*if (getSprite().getY() ==660 && getSprite().getX() > 150) {
-            getSprite().setRotation(0);
-            setSpeedX(4);
-            setSpeedY(0);
-
-        }*/
-
-
     }
 }
 
