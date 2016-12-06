@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
  */
 public class UserCar extends Car {
 
-
     double rotationRate = Math.PI / 70; // how fast it turns
     private double maxSpeed;
     int boostCounter = 0;

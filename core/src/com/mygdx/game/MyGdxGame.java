@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -18,6 +17,7 @@ public class MyGdxGame extends ApplicationAdapter {
     Texture backGround;
     Texture welcome;
     Texture gameOver;
+    Texture levelComplete;
     UserCar userCar;
     Texture board;
     GameState gameState = GameState.WelcomePage;
@@ -61,6 +61,7 @@ public class MyGdxGame extends ApplicationAdapter {
         welcome = new Texture("WellComePage.jpg");
         batch = new SpriteBatch();
         backGround = new Texture("BackGround.jpg");
+        levelComplete = new Texture("level.png");
         gameOver = new Texture("game-over.jpg");
 
         gpLogo = new Texture("Gplogo.png");
@@ -87,12 +88,8 @@ public class MyGdxGame extends ApplicationAdapter {
         aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
     }
 
-    //Timer
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (powerUp(userCar)) {
-                userCar.boost();
-            }
             userCar.accelerate();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -189,11 +186,11 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (userCar.collidesWith(finishLine.get(0).getCollisionRectangle()) && (numberOfLaps == 3)) {
+        if (userCar.collidesWith(finishLine.get(0).getCollisionRectangle()) && (numberOfLaps == 1)) {
             // gameState = GameState.GameOver;  // game state is level complete
             userCar.forceBreak();
+            batch.draw(levelComplete, 250,355 );
         }
-
         batch.end();
     }
 
@@ -398,6 +395,4 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.dispose();
         inGame_music.dispose();
     }
-
-
 }
