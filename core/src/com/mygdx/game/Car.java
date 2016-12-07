@@ -115,6 +115,12 @@ public class Car {
                 getSprite().getHeight() - (2 * SHRINK_COLLISION_RADIUS));
     }
 
+    public void forceBreak() {
+        while (getVelocity() > 0) {
+            setVelocity(getVelocity() - (float) 0.01);
+        }
+    }
+
     public boolean collidesWith(Rectangle otherRect) {
         return getCollisionRectangle().overlaps(otherRect);
     }

@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
+import static com.mygdx.game.MyGdxGame.powerUpFont;
+
 /**
  * Created by Abdulrahman on 11/22/2016.
  */
@@ -70,16 +72,13 @@ public class UserCar extends Car {
     public void boost() {
         maxSpeed = 6;
         boostCounter = 300;
+        powerUpFont = "POWERED UP!";
     }
 
     public void powerDown() {
         maxSpeed = 4;
+        powerUpFont = " ";
     }
 
-    public void forceBreak() {
-        while (getVelocity() > 0) {
-            setVelocity(getVelocity() - (float) 0.05);
-        }
-    }
 
 }
