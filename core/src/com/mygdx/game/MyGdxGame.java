@@ -33,6 +33,7 @@ public class MyGdxGame extends ApplicationAdapter {
     ArrayList<Obstacle> finishLine;
     int[] arr = new int[7];
     int numberOfLaps = 0;
+    Timer timer;
 
     Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 
@@ -52,6 +53,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
     BitmapFont font;
     BitmapFont redFont;
+    BitmapFont bitmapFontFinishTime;
 
     private enum GameState {
         WelcomePage,
@@ -74,6 +76,8 @@ public class MyGdxGame extends ApplicationAdapter {
         font.setColor(Color.WHITE);
         redFont = new BitmapFont();
         redFont.setColor(Color.RED);
+        bitmapFontFinishTime = new BitmapFont();
+        bitmapFontFinishTime.setColor(Color.WHITE);
 
         intro_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
         inGame_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
@@ -85,6 +89,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createObstacles();
         createGrass();
         createPowerUps();
+        createTimer();
     }
 
     public void createUserCar() {
@@ -171,7 +176,8 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(gpLogo, 300, 450, 300, 100);
         batch.draw(board, 50, 20, 400, 200);
         font.draw(batch, driver, 70, 200);
-        redFont.draw(batch, powerUpFont, 70, 150);
+        redFont.draw(batch, powerUpFont, 200, 130);
+        timer.drawTime(batch);
 
         for (Obstacle checkpoint : checkpoints) {
             checkpoint.draw(batch);
@@ -410,6 +416,10 @@ public class MyGdxGame extends ApplicationAdapter {
                 }
             }
         }
+    }
+
+    public void createTimer() {
+        timer = new Timer();
     }
 
     @Override
