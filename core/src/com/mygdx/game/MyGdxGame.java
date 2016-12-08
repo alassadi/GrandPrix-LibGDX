@@ -5,9 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 
@@ -41,7 +45,7 @@ public class MyGdxGame extends ApplicationAdapter {
             grass9, grass10, grass11, grass12, grass13, grass14, grass15;
 
     Obstacle powerUp1, powerUp2, powerUp3, powerUp4;
-    ArrayList<Obstacle> powerUps = new ArrayList<>(1);
+    ArrayList<Obstacle> powerUps = new ArrayList<Obstacle>(1);
     Obstacle finishLine1;
     private Music intro_music;
     private Music powerUpEffect;
@@ -426,4 +430,5 @@ public class MyGdxGame extends ApplicationAdapter {
         inGame_music.dispose();
         powerUpEffect.dispose();
     }
+
 }
