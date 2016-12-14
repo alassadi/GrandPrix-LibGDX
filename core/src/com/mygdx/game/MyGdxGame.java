@@ -5,48 +5,80 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+
 import java.util.ArrayList;
 
 public class MyGdxGame extends ApplicationAdapter {
 
+
     SpriteBatch batch;
     Texture backGround;
+
     Texture backGround2;
+    Texture backGroundLevel3;
+
     Texture welcome;
     Texture gameOver;
     Texture levelCompleted;
     UserCar userCar;
+
     UserCar userCar2;
     Texture board;
     GameState gameState = GameState.WelcomePage;
-    static float userCarPositionX = 550;
-    static float userCarPositionY = 620;
+
+    UserCar userCar3;
+
+
     AiCar aiCar;
     Texture gpLogo;
+    float userCarPositionX=550;
+    float userCarPositionY=620;
     float aiCarPositionX = 450f;
     float aiCarPositionY = 660f;
     ArrayList<Obstacle> checkpoints;
+    ArrayList<Obstacle> checkpoints2;
+    ArrayList<Obstacle> checkpoints3;
     ArrayList<Obstacle> slowOnGrass = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> slowOnGrassLevel3 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItems = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> outSideItemsLevel3=new ArrayList<Obstacle>();
     ArrayList<Obstacle> finishLine;
+    ArrayList<Obstacle> finishLineLevel2;
+    ArrayList<Obstacle> finishLineLevel3;
+
     int[] arr = new int[7];
+    int[] arr2 = new int[8];
+    int[] arr3 = new int[8];
     int numberOfLaps = 0;
+    int numberOfLaps2 = 0;
+    int numberOfLaps3 = 0;
     Timer timer;
+
     Timer timer2;
 
-    Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
+    Timer timer3;
 
-    Obstacle tire1, tire2, tire3, tire4, tree1, tree2, tree3, tree4;
+    Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6, checkpoint7;
+
+    Obstacle tire1, tire2, tire3, tire4, tree1, tree2, tree3, tree4,tree5;
     Obstacle grass1, grass2, grass3, grass4, grass5, grass6, grass7, grass8,
-            grass9, grass10, grass11, grass12, grass13, grass14, grass15;
+            grass9, grass10, grass11, grass12, grass13, grass14, grass15,grass16;
 
     Obstacle powerUp1, powerUp2, powerUp3, powerUp4;
-    ArrayList<Obstacle> powerUps = new ArrayList<>(1);
-    Obstacle finishLine1;
+    ArrayList<Obstacle> powerUps = new ArrayList<Obstacle>(1);
+    ArrayList<Obstacle> powerUpsLevel2 = new ArrayList<Obstacle>(1);
+    ArrayList<Obstacle> powerUpsLevel3 = new ArrayList<Obstacle>(1);
+
+    Obstacle finishLine1,finishLine3, finishLine2;
     private Music intro_music;
     private Music powerUpEffect;
     private Music inGame_music;
@@ -58,14 +90,16 @@ public class MyGdxGame extends ApplicationAdapter {
     BitmapFont redFont;
     BitmapFont bitmapFontFinishTime;
 
+
     private enum GameState {
         WelcomePage,
         GamePage,
         LevelCompleted,
         Level2,
-        Level2Compeleted,
+        Level2Completed,
         Level3,
         Level3Completed,
+
         GameOver
     }
 
@@ -74,7 +108,11 @@ public class MyGdxGame extends ApplicationAdapter {
         welcome = new Texture("WellComePage.jpg");
         batch = new SpriteBatch();
         backGround = new Texture("BackGround.jpg");
+
         backGround2 = new Texture("BackGround2.jpg");
+
+        backGroundLevel3=new Texture("BackGroundLevel3.jpg");
+
         levelCompleted = new Texture("level.png");
         gameOver = new Texture("game-over.jpg");
 
@@ -98,17 +136,30 @@ public class MyGdxGame extends ApplicationAdapter {
         createGrass();
         createPowerUps();
         createTimer();
+        //Level3
+        createObstacleLevel3();
+        createSlowOnGrassLevel3();
+        createPowerUpsLevel3();
+        createUserCar3();
+
+        createPowerUpsLevel2();
+        createPowerUpsLevel3();
+
+
     }
 
     public void createUserCar() {
-        userCar = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
+        userCar = new UserCar("userCar1.png", 550, 620, 4);
+    }
+    public void createUserCar3(){
+        userCar3=new UserCar("userCar1.png", 500,620,4);
     }
     public void createUserCar2() {
         userCar2 = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
     }
 
     public void createAiCar() {
-        aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
+        aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY,4);
     }
 
     public void checkInput() {
@@ -125,6 +176,23 @@ public class MyGdxGame extends ApplicationAdapter {
             userCar.turnRight();
         }
         userCar.deceleration();
+
+    }
+    public void checkInputLevel3() {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            userCar3.accelerate();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            userCar3.breaks();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            userCar3.turnLeft();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            userCar3.turnRight();
+        }
+        userCar3.deceleration();
+
     }
 
     @Override
@@ -145,6 +213,18 @@ public class MyGdxGame extends ApplicationAdapter {
 
             case Level2:
                 renderLevel2();
+                break;
+
+            case Level2Completed:
+                renderLevel2Completed();
+                break;
+
+            case Level3:
+                renderLevel3();
+                break;
+
+            case Level3Completed:
+                //renderLevel3Completed();
                 break;
 
             case GameOver:
@@ -189,14 +269,15 @@ public class MyGdxGame extends ApplicationAdapter {
 
         batch.draw(backGround, 0, 0);
         batch.draw(gpLogo, 300, 450, 300, 100);
-        batch.draw(board, 50, 20, 400, 200);
+        batch.draw(board, 20, 20, 400, 200);
         font.draw(batch, driver, 70, 200);
         redFont.draw(batch, powerUpFont, 200, 130);
         timer.drawTime(batch);
-
+/*
         for (Obstacle checkpoint : checkpoints) {
             checkpoint.draw(batch);
         }
+        */
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
         aiCar.getSprite().draw(batch);
@@ -221,7 +302,7 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (numberOfLaps == 1) {
+        if (numberOfLaps == 0) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.LevelCompleted;
         }
@@ -231,19 +312,36 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void renderLevel2() {
         inGame_music.play();
-
+        createCheckPoints2();
+        checkRoutePoints2(userCar);
+        createFinishLine2();
         checkInput();
         batch.begin();
         batch.draw(backGround2, 0, 0);
         batch.draw(board, 50, 20, 400, 200);
         font.draw(batch, driver, 70, 200);
         redFont.draw(batch, powerUpFont, 200, 130);
+        for (Obstacle checkpoint : checkpoints2) {
+            checkpoint.draw(batch);
+        }
+
+        for (Obstacle finishLinePoint : finishLineLevel2) {
+            finishLinePoint.draw(batch);
+        }
         timer2.drawTime(batch);
+        if (numberOfLaps2 == 1) {                         /////////////////////////
+            // game state is level complete
+            gameState = GameState.Level2Completed;
+        }
 
+        powerUpLevel2(userCar);
 
+        for (Obstacle powerup : powerUpsLevel2) {
+            powerup.draw(batch);
+        }
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
-
+        // here to transit to level 2 complete
         batch.end();
 
     }
@@ -251,6 +349,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public void renderLevelCompleted() {
         batch.begin();
         batch.draw(levelCompleted, 250, 355);
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -261,14 +360,86 @@ public class MyGdxGame extends ApplicationAdapter {
 
             inGame_music.stop();
             userCar.fullStop();
-            userCar.setX(0);
-            userCar.setY(0);
+            userCar.setX(450);
+            userCar.setY(580);
             createTimer2();
             gameState = GameState.Level2;
         }
 
         batch.end();
         // here we transit to another level
+    }
+
+    public void renderLevel2Completed() {
+        batch.begin();
+        batch.draw(levelCompleted, 250, 355);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            intro_music.stop();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            gameState = GameState.GameOver;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+            inGame_music.stop();
+            userCar.fullStop();
+            userCar.setX(450);
+            userCar.setY(580);
+            createTimer3();
+            gameState = GameState.Level3;
+        }
+
+        batch.end();
+        // here we transit to another level
+    }
+
+    public void renderLevel3(){
+
+        inGame_music.play();
+        checkInput();
+        createCheckPoints3();
+        checkRoutePoints3(userCar);
+        createFinishLineLevel3();
+        batch.begin();
+
+
+        batch.draw(backGroundLevel3, 0, 0);
+
+        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
+            outSideItemLevel3.draw(batch);
+        }
+        for (Obstacle grass:slowOnGrassLevel3) {
+            grass.draw(batch);
+        }
+        for (Obstacle checkpoint : checkpoints3) {
+            checkpoint.draw(batch);
+        }
+
+        batch.draw(gpLogo, 680, 167, 300, 100);
+        batch.draw(board, 25, 20, 300, 150);
+        font.draw(batch, driver, 70, 200);
+        redFont.draw(batch, powerUpFont, 120, 100);
+        timer3.drawTime(batch);
+
+
+
+        checkObstaclesLevel3(userCar);
+        checkGrassLevel3(userCar);
+
+
+        for (Obstacle powerUp3 : powerUpsLevel3) {
+            powerUp3.draw(batch);
+        }
+        powerUpLevel3(userCar);
+
+
+
+        userCar.getSprite().draw(batch);
+        userCar.updatePosition();
+
+        batch.end();
+
     }
 
     public void renderGameOver() {
@@ -303,6 +474,26 @@ public class MyGdxGame extends ApplicationAdapter {
         outSideItems.add(tree4);
     }
 
+    public void  createObstacleLevel3(){
+        tire1= new Obstacle("Tire2.png",490, 320, 37, 200 );
+        outSideItemsLevel3.add(tire1);
+        tire2= new Obstacle("Tire3.png",350, 720, 320, 40 );
+        outSideItemsLevel3.add(tire2);
+        tire3= new Obstacle("Tire3.png",620, 5, 320, 40 );
+        outSideItemsLevel3.add(tire3);
+        tree1= new Obstacle("tree.png", 850, 400, 80,80);
+        outSideItemsLevel3.add(tree1);
+        tree2= new Obstacle("Tree1.png", 100, 360, 200,60);
+        outSideItemsLevel3.add(tree2);
+        tree3= new Obstacle("Tree1.png", 1000, 710, 150,50);
+        outSideItemsLevel3.add(tree3);
+        tree4= new Obstacle("tree.png", 990, 200, 80,80);
+        outSideItemsLevel3.add(tree4);
+        tree5= new Obstacle("tree.png", 510, 200, 80,80);
+        outSideItemsLevel3.add(tree5);
+
+    }
+
     public void createCheckPoints() {
         checkpoints = new ArrayList<Obstacle>();
         checkpoint = new Obstacle("wall_0.jpg", 450, 615, 5, 96);
@@ -319,6 +510,45 @@ public class MyGdxGame extends ApplicationAdapter {
         checkpoints.add(checkpoint4);
         checkpoints.add(checkpoint5);
         checkpoints.add(checkpoint6);
+    }
+    public void createCheckPoints2() {
+        checkpoints2 = new ArrayList<Obstacle>();
+        checkpoint = new Obstacle("wall_0.jpg", 250, 580, 5, 96);
+        checkpoint1 = new Obstacle("wall_0.jpg", 700, 580, 5, 96);
+        checkpoint2 = new Obstacle("wall_1.jpg", 460, 160, 96, 5);
+        checkpoint3 = new Obstacle("wall_0.jpg", 750, 54, 5, 96);
+        checkpoint4 = new Obstacle("wall_0.jpg", 250, 455, 5, 90);
+        checkpoint6 = new Obstacle("wall_1.jpg", 970, 370, 96, 5);
+        checkpoint5 = new Obstacle("wall_1.jpg", 1120, 500, 96, 5);
+        checkpoint7 = new Obstacle("wall_1.jpg", 600, 420, 96, 5);
+        checkpoints2.add(checkpoint);
+        checkpoints2.add(checkpoint1);
+        checkpoints2.add(checkpoint2);
+        checkpoints2.add(checkpoint3);
+        checkpoints2.add(checkpoint4);
+        checkpoints2.add(checkpoint5);
+        checkpoints2.add(checkpoint6);
+        checkpoints2.add(checkpoint7);
+    }
+
+    public void createCheckPoints3() {
+        checkpoints3 = new ArrayList<Obstacle>();
+        checkpoint = new Obstacle("wall_0.jpg", 250, 580, 5, 96);
+        checkpoint1 = new Obstacle("wall_0.jpg", 700, 580, 5, 96);
+        checkpoint2 = new Obstacle("wall_1.jpg", 460, 160, 96, 5);
+        checkpoint3 = new Obstacle("wall_0.jpg", 750, 54, 5, 96);
+        checkpoint4 = new Obstacle("wall_0.jpg", 250, 455, 5, 90);
+        checkpoint6 = new Obstacle("wall_1.jpg", 970, 370, 96, 5);
+        checkpoint5 = new Obstacle("wall_1.jpg", 1120, 500, 96, 5);
+        checkpoint7 = new Obstacle("wall_1.jpg", 600, 420, 96, 5);
+        checkpoints2.add(checkpoint);
+        checkpoints2.add(checkpoint1);
+        checkpoints2.add(checkpoint2);
+        checkpoints2.add(checkpoint3);
+        checkpoints2.add(checkpoint4);
+        checkpoints2.add(checkpoint5);
+        checkpoints2.add(checkpoint6);
+        checkpoints2.add(checkpoint7);
     }
 
     public void createGrass() {
@@ -352,12 +582,54 @@ public class MyGdxGame extends ApplicationAdapter {
         slowOnGrass.add(grass14);
         grass15 = new Obstacle("grass.png", 1020, 430, 150, 40);
         slowOnGrass.add(grass15);
+
+
+    }
+    public void createSlowOnGrassLevel3(){
+        grass1=new Obstacle("grass.png", 0,0,600,40);
+        slowOnGrassLevel3.add(grass1);
+        grass2=new Obstacle("grass.png", 950,0,300,40);
+        slowOnGrassLevel3.add(grass2);
+        grass3=new Obstacle("grass.png", 0,0,330,340);
+        slowOnGrassLevel3.add(grass3);
+        grass4=new Obstacle("grass.png", 0,500,100,300);
+        slowOnGrassLevel3.add(grass4);
+        grass5=new Obstacle("grass.png", 0,420,150,40);
+        slowOnGrassLevel3.add(grass5);
+        grass6=new Obstacle("grass.png", 0,720,340,40);
+        slowOnGrassLevel3.add(grass6);
+        grass7=new Obstacle("grass.png", 700,720,300,40);
+        slowOnGrassLevel3.add(grass7);
+        grass8=new Obstacle("grass.png", 880,480,40,180);
+        slowOnGrassLevel3.add(grass8);
+        grass9=new Obstacle("grass.png", 820,680,150,40);
+        slowOnGrassLevel3.add(grass9);
+        grass10=new Obstacle("grass.png", 1250,0,30,760);
+        slowOnGrassLevel3.add(grass10);
+        grass11=new Obstacle("grass.png", 600,185,380,80);
+        slowOnGrassLevel3.add(grass11);
+        grass12=new Obstacle("grass.png", 1070,250,20,310);
+        slowOnGrassLevel3.add(grass12);
+        grass13=new Obstacle("grass.png", 280,555,410,25);
+        slowOnGrassLevel3.add(grass13);
+        grass14=new Obstacle("grass.png", 480,275,80,40);
+        slowOnGrassLevel3.add(grass14);
+        grass15=new Obstacle("grass.png",700,400,140,20);
+        slowOnGrassLevel3.add(grass15);
+
     }
 
     //If collides with Obstacle
     public void checkObstacles(UserCar userCar) {
         for (int i = 0; i < outSideItems.size(); i++) {
             if (userCar.collidesWith(outSideItems.get(i).getCollisionRectangle())) {
+                userCar.fullStop();
+            }
+        }
+    }
+    public void checkObstaclesLevel3(UserCar userCar){
+        for (int i= 0; i<outSideItemsLevel3.size(); i++){
+            if (userCar.collidesWith(outSideItemsLevel3.get(i).getCollisionRectangle())){
                 userCar.fullStop();
             }
         }
@@ -370,12 +642,30 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
+    public void checkGrassLevel3(UserCar userCar){
+        for (int i=0; i<slowOnGrassLevel3.size(); i++){
+            if (userCar.collidesWith(slowOnGrassLevel3.get(i).getCollisionRectangle())){
+                userCar.slowOnGrass();
+            }
+        }
+    }
 
     public void createFinishLine() {
         finishLine = new ArrayList<Obstacle>(1);
         finishLine1 = new Obstacle("wall_0.jpg", 550, 615, 5, 96);
         finishLine.add(finishLine1);
 
+    }
+    public void createFinishLine2() {
+        finishLineLevel2 = new ArrayList<Obstacle>(1);
+        finishLine2 = new Obstacle("wall_0.jpg", 450, 580, 5, 96);
+        finishLineLevel2.add(finishLine2);
+
+    }
+    public void createFinishLineLevel3(){
+        finishLineLevel3=new ArrayList<Obstacle>(1);
+        finishLine3=new Obstacle("wall_0.jpg",550,615,5,96 );
+        finishLineLevel3.add(finishLine3);
     }
 
     public void createPowerUps() {
@@ -414,10 +704,93 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         return false;
     }
+    public void createPowerUpsLevel2(){
+        int upper = 3;
+        int lower = 0;
+        int randomNumber = (int) (Math.random() * (upper - lower)) + lower;
+
+        switch (randomNumber) {
+            case 0:
+                powerUp1 = new Obstacle("coin.png", 400, 660, 20, 20);
+                powerUpsLevel2.add(powerUp1);
+                break;
+            case 1:
+                powerUp2 = new Obstacle("coin.png", 930, 100, 20, 20);
+                powerUpsLevel2.add(powerUp2);
+                break;
+            case 2:
+                powerUp3 = new Obstacle("coin.png", 1150, 500, 20, 20);
+                powerUpsLevel2.add(powerUp3);
+                break;
+            case 3:
+                powerUp4 = new Obstacle("coin.png",430, 300, 20, 20);
+                powerUpsLevel2.add(powerUp4);
+                break;
+        }
+    }
+    public boolean powerUpLevel2(UserCar userCar) {
+        for (int i = 0; i < powerUpsLevel2.size(); i++) {
+            if (userCar.collidesWith(powerUpsLevel2.get(i).getCollisionRectangle())) {
+                powerUpsLevel2.remove(i);
+                userCar.boost();
+                powerUpEffect.play();
+                return true;
+            } else return false;
+        }
+        return false;
+    }
+
+    public void createPowerUpsLevel3(){
+        int upper = 3;
+        int lower = 0;
+        int randomNumber = (int) (Math.random() * (upper - lower)) + lower;
+
+        switch (randomNumber) {
+            case 0:
+                powerUp1 = new Obstacle("coin.png", 400, 660, 20, 20);
+                powerUpsLevel3.add(powerUp1);
+                break;
+            case 1:
+                powerUp2 = new Obstacle("coin.png", 930, 100, 20, 20);
+                powerUpsLevel3.add(powerUp2);
+                break;
+            case 2:
+                powerUp3 = new Obstacle("coin.png", 1150, 500, 20, 20);
+                powerUpsLevel3.add(powerUp3);
+                break;
+            case 3:
+                powerUp4 = new Obstacle("coin.png",430, 300, 20, 20);
+                powerUpsLevel3.add(powerUp4);
+                break;
+        }
+    }
+    public boolean powerUpLevel3(UserCar userCar) {
+        for (int i = 0; i < powerUpsLevel3.size(); i++) {
+            if (userCar.collidesWith(powerUpsLevel3.get(i).getCollisionRectangle())) {
+                powerUpsLevel3.remove(i);
+                userCar.boost();
+                powerUpEffect.play();
+                return true;
+            } else return false;
+        }
+        return false;
+    }
 
     public boolean checkFinishLine(int[] arr) {
         if (checkArray(arr)) {
             if (userCar.collidesWith(finishLine.get(0).getCollisionRectangle())) {
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = 0;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkFinishLine2(int[] arr) {
+        if (checkArray2(arr)) {
+            if (userCar.collidesWith(finishLineLevel2.get(0).getCollisionRectangle())) {
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = 0;
                 }
@@ -432,8 +805,14 @@ public class MyGdxGame extends ApplicationAdapter {
             return true;
         else return false;
     }
+    public boolean checkArray2(int[] arr) {
+        if ((arr[0] == 1) && (arr[1] == 1) && (arr[2] == 1) && (arr[3] == 1) && (arr[4] == 1) && (arr[5] == 1) && (arr[6] == 1)&& (arr[7] == 1))
+            return true;
+        else return false;
+    }
 
     public void checkRoutePoints(UserCar userCar) {
+        driver = "";
 
         for (int j = 0; j < checkpoints.size(); j++) {
             if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
@@ -461,18 +840,85 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
+    public void checkRoutePoints2(UserCar userCar) {
+        driver = "";
+
+        for (int j = 0; j < checkpoints2.size(); j++) {
+            if (userCar.collidesWith(checkpoints2.get(j).getCollisionRectangle())) {
+                arr2[j] = 1; // if the next is 0 set to zero else set one
+                //		 to make sure the start last point is counted at the end not the first
+            }
+        }
+
+        if (checkArray2(arr2)) {
+            if (checkFinishLine2(arr2)) {
+                numberOfLaps2++;
+                if (numberOfLaps2 == 1) {
+                    System.out.println("done with 1 lap " + (numberOfLaps2));
+                    driver = "Finished 1 Lap";
+
+                } else if (numberOfLaps2 == 2) {
+                    System.out.println(" lap 2 " + (numberOfLaps2));
+                    driver = "Finished 2 Laps";
+
+                } else if (numberOfLaps2 == 3) {
+                    System.out.println(" lap 3 " + (numberOfLaps2));
+                    driver = "Finished 3 Laps";
+                    // HERE IS WHERE THE CAR FINISH THE RACE
+                }
+            }
+        }
+    }
+
+    public void checkRoutePoints3(UserCar userCar) {
+        driver = "";
+
+        for (int j = 0; j < checkpoints3.size(); j++) {
+            if (userCar.collidesWith(checkpoints3.get(j).getCollisionRectangle())) {
+                arr3[j] = 1; // if the next is 0 set to zero else set one
+                //		 to make sure the start last point is counted at the end not the first
+            }
+        }
+
+        if (checkArray2(arr3)) {
+            if (checkFinishLine2(arr3)) {
+                numberOfLaps3++;
+                if (numberOfLaps3 == 1) {
+                    System.out.println("done with 1 lap " + (numberOfLaps3));
+                    driver = "Finished 1 Lap";
+
+                } else if (numberOfLaps3 == 2) {
+                    System.out.println(" lap 2 " + (numberOfLaps3));
+                    driver = "Finished 2 Laps";
+
+                } else if (numberOfLaps3 == 3) {
+                    System.out.println(" lap 3 " + (numberOfLaps3));
+                    driver = "Finished 3 Laps";
+                    // HERE IS WHERE THE CAR FINISH THE RACE
+                }
+            }
+        }
+    }
+
 
     public void createTimer() {
         timer = new Timer();
     }
+
     public void createTimer2() {
         timer2 = new Timer();
     }
+
+    public void createTimer3() {
+        timer3 = new Timer();
+    }
+
 
     @Override
     public void dispose() {
         batch.dispose();
         backGround.dispose();
+        backGroundLevel3.dispose();
         board.dispose();
         font.dispose();
         gpLogo.dispose();
@@ -482,9 +928,12 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.dispose();
         inGame_music.dispose();
         powerUpEffect.dispose();
+
         redFont.dispose();
         bitmapFontFinishTime.dispose();
         backGround2.dispose();
+        backGroundLevel3.dispose();
+
 
     }
 }

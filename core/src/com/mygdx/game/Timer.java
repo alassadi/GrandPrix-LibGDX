@@ -30,6 +30,6 @@ public class Timer {
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100
         );
 
-        timerFont.draw(batch, time, 280, 200);
+        timerFont.draw(batch, time, 30, 40);
     }
 }
