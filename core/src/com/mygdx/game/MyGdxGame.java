@@ -15,14 +15,16 @@ public class MyGdxGame extends ApplicationAdapter {
 
     SpriteBatch batch;
     Texture backGround;
+    Texture backGround2;
     Texture welcome;
     Texture gameOver;
     Texture levelCompleted;
     UserCar userCar;
+    UserCar userCar2;
     Texture board;
     GameState gameState = GameState.WelcomePage;
-    float userCarPositionX = 550f;
-    float userCarPositionY = 620f;
+    static float userCarPositionX = 550;
+    static float userCarPositionY = 620;
     AiCar aiCar;
     Texture gpLogo;
     float aiCarPositionX = 450f;
@@ -34,6 +36,7 @@ public class MyGdxGame extends ApplicationAdapter {
     int[] arr = new int[7];
     int numberOfLaps = 0;
     Timer timer;
+    Timer timer2;
 
     Obstacle checkpoint, checkpoint1, checkpoint2, checkpoint3, checkpoint4, checkpoint5, checkpoint6;
 
@@ -59,6 +62,10 @@ public class MyGdxGame extends ApplicationAdapter {
         WelcomePage,
         GamePage,
         LevelCompleted,
+        Level2,
+        Level2Compeleted,
+        Level3,
+        Level3Completed,
         GameOver
     }
 
@@ -67,6 +74,7 @@ public class MyGdxGame extends ApplicationAdapter {
         welcome = new Texture("WellComePage.jpg");
         batch = new SpriteBatch();
         backGround = new Texture("BackGround.jpg");
+        backGround2 = new Texture("BackGround2.jpg");
         levelCompleted = new Texture("level.png");
         gameOver = new Texture("game-over.jpg");
 
@@ -94,6 +102,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void createUserCar() {
         userCar = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
+    }
+    public void createUserCar2() {
+        userCar2 = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
     }
 
     public void createAiCar() {
@@ -130,6 +141,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
             case LevelCompleted:
                 renderLevelCompleted();
+                break;
+
+            case Level2:
+                renderLevel2();
                 break;
 
             case GameOver:
@@ -206,7 +221,7 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (numberOfLaps == 3) {
+        if (numberOfLaps == 1) {
             // game state is level complete
             gameState = GameState.LevelCompleted;
         }
@@ -214,12 +229,42 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.end();
     }
 
+    public void renderLevel2() {
+        inGame_music.play();
+
+        checkInput();
+        batch.begin();
+        batch.draw(backGround2, 0, 0);
+        batch.draw(board, 50, 20, 400, 200);
+        font.draw(batch, driver, 70, 200);
+        redFont.draw(batch, powerUpFont, 200, 130);
+        timer2.drawTime(batch);
+
+
+        userCar.getSprite().draw(batch);
+        userCar.updatePosition();
+
+        batch.end();
+
+    }
+
     public void renderLevelCompleted() {
         batch.begin();
         batch.draw(levelCompleted, 250, 355);
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             gameState = GameState.GameOver;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+            inGame_music.stop();
+            userCar.fullStop();
+            userCar.setX(0);
+            userCar.setY(0);
+            createTimer2();
+            gameState = GameState.Level2;
         }
 
         batch.end();
@@ -230,8 +275,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.draw(gameOver, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        createUserCar();
-        createAiCar();
+
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             gameState = GameState.WelcomePage;
@@ -421,6 +465,9 @@ public class MyGdxGame extends ApplicationAdapter {
     public void createTimer() {
         timer = new Timer();
     }
+    public void createTimer2() {
+        timer2 = new Timer();
+    }
 
     @Override
     public void dispose() {
@@ -435,5 +482,9 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.dispose();
         inGame_music.dispose();
         powerUpEffect.dispose();
+        redFont.dispose();
+        bitmapFontFinishTime.dispose();
+        backGround2.dispose();
+
     }
 }
