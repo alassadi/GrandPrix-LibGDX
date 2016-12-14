@@ -205,7 +205,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 break;
 
             case Level3Completed:
-                //renderLevel3Completed();
+                renderLevel3Completed();
                 break;
 
             case GameOver:
@@ -221,7 +221,7 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.play();
         //if enter key is pressed in the welcome page it will go to game page and stop the welcome page music
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            gameState = GameState.GamePage;
+            gameState = GameState.Level3;
             intro_music.stop();
         }
 
@@ -375,6 +375,28 @@ public class MyGdxGame extends ApplicationAdapter {
         // here we transit to another level
     }
 
+    public void renderLevel3Completed() {
+        batch.begin();
+        batch.draw(levelCompleted, 250, 355);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            intro_music.stop();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            gameState = GameState.GameOver;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+            inGame_music.stop();
+            userCar.fullStop();
+
+            gameState = GameState.WelcomePage;
+        }
+
+        batch.end();
+    }
+        // here we transit to another level
+
     public void renderLevel3(){
 
         inGame_music.play();
@@ -405,23 +427,27 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(board, 25, 20, 300, 150);
         font.draw(batch, driver, 70, 200);
         redFont.draw(batch, powerUpFont, 120, 100);
-        timer3.drawTime(batch);
+        //timer3.drawTime(batch);
 
 
 
         checkObstaclesLevel3(userCar);
         checkGrassLevel3(userCar);
 
-
-        for (Obstacle powerUp3 : powerUpsLevel3) {
-            powerUp3.draw(batch);
+        if (numberOfLaps3 == 7) {                         /////////////////////////
+            // game state is level complete
+            gameState = GameState.Level3Completed;
         }
-        powerUpLevel3(userCar);
 
 
+            for (Obstacle powerUp3 : powerUpsLevel3) {
+                powerUp3.draw(batch);
+            }
+            powerUpLevel3(userCar);
 
-        userCar.getSprite().draw(batch);
-        userCar.updatePosition();
+
+            userCar.getSprite().draw(batch);
+            userCar.updatePosition();
 
         batch.end();
 
