@@ -1,21 +1,25 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 /**
  * Created by fatih on 2016-11-22.
  */
 public class AiCar extends Car {
 
-    public AiCar(String textureFileName, float x, float y) {
+
+    private double maxSpeed;
+
+    public AiCar(String textureFileName, float x, float y,double maxSpeed) {
         super(textureFileName, x, y);
+        this.maxSpeed=maxSpeed;
         getSprite().setOriginCenter();
     }
 
-    public void updatePositionFromSpeed() {
-        //First call the method "updatePositionFromSpeed" in the Car super class
-        super.updatePositionFromSpeed();
-        // Since we control the track of the ai car, no need to use stop at the edge method.
-        stopAtEdge();
+    public void updatePosition() {
+        super.updatePosition();
     }
+
 
     public void Route() {
 
@@ -184,7 +188,9 @@ public class AiCar extends Car {
             setSpeedY(1);
 
         }
+
     }
+
 }
 
 
