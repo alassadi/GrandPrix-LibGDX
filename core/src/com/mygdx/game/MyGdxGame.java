@@ -82,6 +82,8 @@ public class MyGdxGame extends ApplicationAdapter {
     private Music intro_music;
     private Music powerUpEffect;
     private Music inGame_music;
+    private Music carEngine1;
+    private Music carEngine2;
 
     static CharSequence driver = " ";
     static CharSequence powerUpFont = " ";
@@ -128,6 +130,9 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
         inGame_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
         powerUpEffect = Gdx.audio.newMusic(Gdx.files.internal("data/powerup_effect.mp3"));
+        carEngine1 = Gdx.audio.newMusic(Gdx.files.internal("data/formula.mp3"));
+        carEngine2 = Gdx.audio.newMusic(Gdx.files.internal("data/formula2.mp3"));
+
 
         createUserCar();
         createAiCar();
@@ -162,15 +167,19 @@ public class MyGdxGame extends ApplicationAdapter {
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             userCar.accelerate();
+            carEngine1.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             userCar.breaks();
+            carEngine2.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             userCar.turnLeft();
+            carEngine1.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             userCar.turnRight();
+            carEngine1.play();
         }
         userCar.deceleration();
 
@@ -221,8 +230,12 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.play();
         //if enter key is pressed in the welcome page it will go to game page and stop the welcome page music
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            gameState = GameState.Level3;
+            gameState = GameState.GamePage;
+            inGame_music.stop();
+            userCar.fullStop();
             intro_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
         }
 
         // if escape key was pressed in the welcome page it will got to the game over page
@@ -283,7 +296,7 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (numberOfLaps == 0) {                         /////////////////////////
+        if (numberOfLaps == 3) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.LevelCompleted;
         }
@@ -310,7 +323,7 @@ public class MyGdxGame extends ApplicationAdapter {
             finishLinePoint.draw(batch);
         }
         timer2.drawTime(batch);
-        if (numberOfLaps2 == 1) {                         /////////////////////////
+        if (numberOfLaps2 == 5) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.Level2Completed;
         }
@@ -340,6 +353,8 @@ public class MyGdxGame extends ApplicationAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             inGame_music.stop();
+            carEngine2.stop();
+            carEngine1.stop();
             userCar.fullStop();
             userCar.setX(450);
             userCar.setY(580);
@@ -364,6 +379,8 @@ public class MyGdxGame extends ApplicationAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             inGame_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
             userCar.fullStop();
             userCar.setX(450);
             userCar.setY(580);
@@ -388,6 +405,8 @@ public class MyGdxGame extends ApplicationAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             inGame_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
             userCar.fullStop();
 
             gameState = GameState.WelcomePage;
@@ -427,7 +446,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(board, 25, 20, 300, 150);
         font.draw(batch, driver, 70, 200);
         redFont.draw(batch, powerUpFont, 120, 100);
-        //timer3.drawTime(batch);
+        timer3.drawTime(batch);
 
 
 
@@ -956,11 +975,14 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.dispose();
         inGame_music.dispose();
         powerUpEffect.dispose();
+        carEngine1.dispose();
+        carEngine2.dispose();
 
         redFont.dispose();
         bitmapFontFinishTime.dispose();
         backGround2.dispose();
         backGroundLevel3.dispose();
+
 
 
     }
