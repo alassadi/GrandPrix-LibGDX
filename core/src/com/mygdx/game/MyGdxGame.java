@@ -347,7 +347,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(gpLogo, 300, 450, 300, 100);
         batch.draw(board, 20, 20, 400, 200);
         redFont.draw(batch, powerUpFont, 200, 130);
-        //timer.drawTime(batch);
+        timer.drawTime(batch);
         font.draw(batch, driver, 70, 200);
 
         for (Obstacle checkpoint : checkpoints) {
