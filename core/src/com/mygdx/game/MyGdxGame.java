@@ -345,10 +345,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
         batch.draw(backGround, 0, 0);
         batch.draw(gpLogo, 300, 450, 300, 100);
-        batch.draw(board, 20, 20, 400, 200);
+
+        batch.draw(board, 20, 20, 300, 150);
+        font.draw(batch, driver, 70, 200);
+
         redFont.draw(batch, powerUpFont, 200, 130);
         timer.drawTime(batch);
-        font.draw(batch, driver, 70, 200);
+
 
         for (Obstacle checkpoint : checkpoints) {
             checkpoint.draw(batch);
@@ -409,6 +412,13 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Obstacle finishLinePoint : finishLineLevel2) {
             finishLinePoint.draw(batch);
         }
+
+
+        batch.draw(backGround2, 0, 0);
+        batch.draw(board, 20, 20, 300, 150);
+        font.draw(batch, driver, 70, 200);
+        redFont.draw(batch, powerUpFont, 200, 130);
+
         timer2.drawTime(batch);
         if (numberOfLaps2 == 5) {                         /////////////////////////
             // game state is level complete
