@@ -30,45 +30,6 @@ public class UserCar extends Car {
             powerDown();
         }
     }
-
-    public void deceleration() {
-        if (getVelocity() > 0)
-            setVelocity(getVelocity() - (float) 0.02);
-    }
-
-    public void accelerate() {
-        if (this.getVelocity() < maxSpeed)
-            setVelocity(this.getVelocity() + (float) 0.05);
-    }
-
-    public void breaks() {
-        if (getVelocity() > 0)
-            setVelocity(getVelocity() - (float) 0.05);
-
-    }
-
-    public void turnLeft() {
-        setAngle(getAngle() + rotationRate);
-        getSprite().setRotation((float) getAngle() * (float) 57.3);
-        breaks();
-    }
-
-    public void turnRight() {
-        setAngle(getAngle() - rotationRate);
-        getSprite().setRotation((float) getAngle() * (float) 57.3);
-        breaks();
-    }
-
-    public void fullStop() {
-        setVelocity(0);
-    }
-
-    public void slowOnGrass() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            setVelocity(1);
-        }
-    }
-
     public void boost() {
         maxSpeed = 6;
         boostCounter = 300;
@@ -77,8 +38,6 @@ public class UserCar extends Car {
 
     public void powerDown() {
         maxSpeed = 4;
-        powerUpFont = " ";
+        powerUpFont = "";
     }
-
-
 }
