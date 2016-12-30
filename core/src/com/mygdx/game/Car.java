@@ -211,4 +211,8 @@ public class Car {
         }
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d

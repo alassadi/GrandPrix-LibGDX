@@ -458,7 +458,11 @@ public class MyGdxGame extends ApplicationAdapter {
             userCar.setX(450);
             userCar.setY(580);
             //aiCarPositionX = 450f;
+<<<<<<< HEAD
             // aiCarPositionY = 625f;
+=======
+           // aiCarPositionY = 625f;
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
             createAiCar();
             createTimer2();
             gameState = GameState.Level2;
@@ -518,7 +522,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
         batch.end();
     }
+<<<<<<< HEAD
     // here we transit to another level
+=======
+        // here we transit to another level
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
 
     public void renderLevel3(){
 
@@ -936,8 +944,13 @@ public class MyGdxGame extends ApplicationAdapter {
                 powerUpsLevel2.remove(i);
                 userCar.boost();
                 powerUpEffect.play();
+<<<<<<< HEAD
                 // aiCar2.getSprite().draw(batch);
                 // aiCar2.updatePosition();
+=======
+               // aiCar2.getSprite().draw(batch);
+               // aiCar2.updatePosition();
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
                 return true;
             } else return false;
         }
@@ -1033,7 +1046,11 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void checkRoutePoints(UserCar userCar) {
+<<<<<<< HEAD
 
+=======
+        driver = "";
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
 
         for (int j = 0; j < checkpoints.size(); j++) {
             if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
@@ -1062,7 +1079,11 @@ public class MyGdxGame extends ApplicationAdapter {
                 driver = String.format("Finished Lap %d.", numberOfLaps);
                 System.out.print("driver value:" + driver);
                 lapTimes.add(timer.time);
+<<<<<<< HEAD
                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
+=======
+                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
                 System.out.print("LAP TIME: " + lapTimes.get(numberOfLaps-1));
             }
         }
@@ -1152,4 +1173,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
