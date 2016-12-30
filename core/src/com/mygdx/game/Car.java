@@ -1,16 +1,19 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * Created by Abdulrahman on 11/22/2016.
  */
 public class Car {
+
 
     private int speedX = 0;
     private int speedY = 0;
@@ -18,6 +21,10 @@ public class Car {
     private float velocity = 0;
     private Sprite sprite;
     private final int SHRINK_COLLISION_RADIUS;
+
+    double rotationRate = Math.PI / 70; // how fast it turns
+
+
 
     public Car(String textureFileName, float x, float y) {
         sprite = new Sprite(new Texture(textureFileName));
@@ -117,14 +124,88 @@ public class Car {
                 getSprite().getHeight() - (2 * SHRINK_COLLISION_RADIUS));
     }
 
-    public void forceBreak() {
-        while (getVelocity() > 0) {
-            setVelocity(getVelocity() - (float) 0.01);
+    public boolean collidesWith(Rectangle otherRect) {
+        return getCollisionRectangle().overlaps(otherRect);
+    }
+
+
+
+    public void deceleration(float decelerationRate) {
+        if (getVelocity() > 0)
+        {
+            setVelocity(getVelocity() - decelerationRate);
+            if (getVelocity() < 0) {
+                setVelocity(0);
+            }
         }
     }
 
-    public boolean collidesWith(Rectangle otherRect) {
-        return getCollisionRectangle().overlaps(otherRect);
+
+    public void accelerate(double maxSpeed, float accelerationRate) {
+        if (this.getVelocity() < maxSpeed)
+            setVelocity(this.getVelocity() + accelerationRate);
+    }
+
+    public void breaks(float breaksRate) {
+        if (getVelocity() > 0)
+            setVelocity(getVelocity() - breaksRate);
+        if (getVelocity() < 0) {
+            setVelocity(0);
+        }
+    }
+
+    public void turnLeft() {
+        setAngle(getAngle() + rotationRate);
+        getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
+        if (getVelocity() > 2)
+            setVelocity(getVelocity() - (float)0.05);
+    }
+
+    public void turnRight() {
+        setAngle(getAngle() - rotationRate);
+        getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
+        if (getVelocity() > 2)
+            setVelocity(getVelocity() - (float)0.05);
+    }
+
+    public void fullStop() {
+        setVelocity(0);
+    }
+
+    public void slowOnGrass() {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (getVelocity()>1) {
+                setVelocity(getVelocity()-(float)0.07);
+            }
+        }
+    }
+
+    public void spinOnStain(int leftOrRight)
+    {
+        if (leftOrRight<1) {
+            setAngle(getAngle() - rotationRate*0.75);
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                getSprite().setRotation((float) getAngle() * (float) 59.3);
+            }
+            else {
+                //tempAngle = getAngle() + rotationRate;
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    setAngle(getAngle() + rotationRate*0.75);
+                    getSprite().setRotation((float) getAngle() * (float) 59.3);
+                }
+            }
+        }
+    }
+
+
+    public void forceBreak() {
+        while (getVelocity() >= 0) {
+            setVelocity(getVelocity() - (float) 0.05);
+            if (getVelocity()<0)
+            {
+                setVelocity(0);
+            }
+        }
     }
 
 
