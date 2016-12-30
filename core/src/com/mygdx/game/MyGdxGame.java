@@ -140,10 +140,8 @@ public class MyGdxGame extends ApplicationAdapter {
         createObstacleLevel3();
         createSlowOnGrassLevel3();
         createPowerUpsLevel3();
-        createUserCar3();
-
         createPowerUpsLevel2();
-        createPowerUpsLevel3();
+
 
 
     }
@@ -151,12 +149,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public void createUserCar() {
         userCar = new UserCar("userCar1.png", 550, 620, 4);
     }
-    public void createUserCar3(){
-        userCar3=new UserCar("userCar1.png", 500,620,4);
-    }
-    public void createUserCar2() {
-        userCar2 = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
-    }
+
 
     public void createAiCar() {
         aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY,4);
@@ -176,22 +169,6 @@ public class MyGdxGame extends ApplicationAdapter {
             userCar.turnRight();
         }
         userCar.deceleration();
-
-    }
-    public void checkInputLevel3() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            userCar3.accelerate();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            userCar3.breaks();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            userCar3.turnLeft();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            userCar3.turnRight();
-        }
-        userCar3.deceleration();
 
     }
 
@@ -406,9 +383,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
         batch.draw(backGroundLevel3, 0, 0);
 
-        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
-            outSideItemLevel3.draw(batch);
-        }
+
         for (Obstacle grass:slowOnGrassLevel3) {
             grass.draw(batch);
         }
@@ -437,7 +412,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
-
+        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
+            outSideItemLevel3.draw(batch);
+        }
         batch.end();
 
     }
@@ -541,14 +518,14 @@ public class MyGdxGame extends ApplicationAdapter {
         checkpoint6 = new Obstacle("wall_1.jpg", 970, 370, 96, 5);
         checkpoint5 = new Obstacle("wall_1.jpg", 1120, 500, 96, 5);
         checkpoint7 = new Obstacle("wall_1.jpg", 600, 420, 96, 5);
-        checkpoints2.add(checkpoint);
-        checkpoints2.add(checkpoint1);
-        checkpoints2.add(checkpoint2);
-        checkpoints2.add(checkpoint3);
-        checkpoints2.add(checkpoint4);
-        checkpoints2.add(checkpoint5);
-        checkpoints2.add(checkpoint6);
-        checkpoints2.add(checkpoint7);
+        checkpoints3.add(checkpoint);
+        checkpoints3.add(checkpoint1);
+        checkpoints3.add(checkpoint2);
+        checkpoints3.add(checkpoint3);
+        checkpoints3.add(checkpoint4);
+        checkpoints3.add(checkpoint5);
+        checkpoints3.add(checkpoint6);
+        checkpoints3.add(checkpoint7);
     }
 
     public void createGrass() {
@@ -799,6 +776,17 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         return false;
     }
+    public boolean checkFinishLine3(int[] arr) {
+        if (checkArray2(arr)) {
+            if (userCar.collidesWith(finishLineLevel3.get(0).getCollisionRectangle())) {
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = 0;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean checkArray(int[] arr) {
         if ((arr[0] == 1) && (arr[1] == 1) && (arr[2] == 1) && (arr[3] == 1) && (arr[4] == 1) && (arr[5] == 1) && (arr[6] == 1))
@@ -881,7 +869,7 @@ public class MyGdxGame extends ApplicationAdapter {
         }
 
         if (checkArray2(arr3)) {
-            if (checkFinishLine2(arr3)) {
+            if (checkFinishLine3(arr3)) {
                 numberOfLaps3++;
                 if (numberOfLaps3 == 1) {
                     System.out.println("done with 1 lap " + (numberOfLaps3));
