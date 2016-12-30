@@ -193,14 +193,6 @@ public class Car {
         }
     }
 
-    public void boost() {
-
-    }
-
-    public void powerDown() {
-
-    }
-
     public void forceBreak() {
         while (getVelocity() >= 0) {
             setVelocity(getVelocity() - (float) 0.05);
@@ -210,9 +202,4 @@ public class Car {
             }
         }
     }
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d

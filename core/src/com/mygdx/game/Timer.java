@@ -11,16 +11,11 @@ import java.util.concurrent.TimeUnit;
 public class Timer {
     SpriteBatch batch;
     private BitmapFont timerFont;
-<<<<<<< HEAD
-    private final long startTime;
-    private long elapsedTime;
-=======
+
     //private float deltaTime = 0;
     private final long startTime;
     private long elapsedTime;
 
-
->>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
     String time;
 
     public Timer() {
@@ -28,17 +23,6 @@ public class Timer {
         timerFont.setColor(Color.WHITE);
         batch = new SpriteBatch();
         startTime = TimeUtils.millis();
-<<<<<<< HEAD
-    }
-
-    public void drawTime(SpriteBatch batch) {
-        elapsedTime = TimeUtils.timeSinceMillis(startTime);
-        time = String.format("Elapsed Time: %02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
-                TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
-                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100
-=======
-
     }
 
     public void drawTime(SpriteBatch batch) {
@@ -47,19 +31,8 @@ public class Timer {
         time = String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
                 TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100
->>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
-        );
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100);
 
         timerFont.draw(batch, time, 30, 40);
     }
-<<<<<<< HEAD
-=======
-
-//    public void drawTime(SpriteBatch batch) {
-//        elapsedTime = TimeUtils.timeSinceMillis(startTime);
-//        str = Long.toString(elapsedTime);
-//        timerFont.draw(batch, str, 100, 100);
-//    }
->>>>>>> 2d65a0e440925f8ee125da67e18df5ce80f39f9d
 }
