@@ -367,7 +367,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(backGround, 0, 0);
         batch.draw(gpLogo, 300, 450, 300, 100);
         batch.draw(board, 20, 20, 300, 150);
-        font.draw(batch, driver, 70, 200);
+        font.draw(batch, driver, 30, 160);
         redFont.draw(batch, powerUpFont, 190, 100);
         timer.drawTime(batch);
         speedMeter.draw(batch, speed,200,150);
@@ -423,7 +423,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         batch.draw(backGround2, 0, 0);
         batch.draw(board, 20, 20, 300, 150);
-        font.draw(batch, driver, 70, 200);
+        font.draw(batch, driver, 30, 160);
         redFont.draw(batch, powerUpFont, 190, 100);
         speedMeter.draw(batch, speed,200,150);
         for (Obstacle checkpoint : checkpoints2) {
@@ -469,6 +469,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         userCar.fullStop();
         batch.draw(levelCompleted, 250, 355);
+        driver=" ";
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -500,6 +501,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public void renderLevel2Completed() {
         batch.begin();
         batch.draw(levelCompleted, 250, 355);
+        driver=" ";
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -584,7 +586,7 @@ public class MyGdxGame extends ApplicationAdapter {
         redFont.draw(batch, powerUpFont, 190, 100);
         speedMeter.draw(batch, speed,200,150);
         timer3.drawTime(batch);
-        font.draw(batch, driver, 70, 200);
+        font.draw(batch, driver, 30, 160);
 
 
         checkObstaclesLevel3(userCar);
@@ -1070,8 +1072,6 @@ public class MyGdxGame extends ApplicationAdapter {
     public void checkRoutePoints(UserCar userCar) {
 
 
-        driver = "";
-
         for (int j = 0; j < checkpoints.size(); j++) {
             if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
                 arr[j] = 1; // if the next is 0 set to zero else set one
@@ -1115,7 +1115,6 @@ public class MyGdxGame extends ApplicationAdapter {
             speed = String.format("%.0f"+" mph",a*50);
     }
     public void checkRoutePoints2(UserCar userCar) {
-        driver = "";
 
         for (int j = 0; j < checkpoints2.size(); j++) {
             if (userCar.collidesWith(checkpoints2.get(j).getCollisionRectangle())) {
@@ -1138,7 +1137,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void checkRoutePoints3(UserCar userCar) {
-        driver = "";
+
 
         for (int j = 0; j < checkpoints3.size(); j++) {
             if (userCar.collidesWith(checkpoints3.get(j).getCollisionRectangle())) {
