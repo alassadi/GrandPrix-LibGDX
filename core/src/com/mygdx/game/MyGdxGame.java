@@ -82,6 +82,8 @@ public class MyGdxGame extends ApplicationAdapter {
     private Music intro_music;
     private Music powerUpEffect;
     private Music inGame_music;
+    private Music carEngine1;
+    private Music carEngine2;
 
     static CharSequence driver = " ";
     static CharSequence powerUpFont = " ";
@@ -128,6 +130,9 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
         inGame_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
         powerUpEffect = Gdx.audio.newMusic(Gdx.files.internal("data/powerup_effect.mp3"));
+        carEngine1 = Gdx.audio.newMusic(Gdx.files.internal("data/formula.mp3"));
+        carEngine2 = Gdx.audio.newMusic(Gdx.files.internal("data/formula2.mp3"));
+
 
         createUserCar();
         createAiCar();
@@ -140,6 +145,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createObstacleLevel3();
         createSlowOnGrassLevel3();
         createPowerUpsLevel3();
+
         createPowerUpsLevel2();
 
 
@@ -150,6 +156,11 @@ public class MyGdxGame extends ApplicationAdapter {
         userCar = new UserCar("userCar1.png", 550, 620, 4);
     }
 
+    // ????????
+    public void createUserCar2() {
+        userCar2 = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
+    }
+
 
     public void createAiCar() {
         aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY,4);
@@ -158,15 +169,19 @@ public class MyGdxGame extends ApplicationAdapter {
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             userCar.accelerate();
+            carEngine1.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             userCar.breaks();
+            carEngine2.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             userCar.turnLeft();
+            carEngine1.play();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             userCar.turnRight();
+            carEngine1.play();
         }
         userCar.deceleration();
 
@@ -201,7 +216,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 break;
 
             case Level3Completed:
-                //renderLevel3Completed();
+                renderLevel3Completed();
                 break;
 
             case GameOver:
@@ -218,7 +233,11 @@ public class MyGdxGame extends ApplicationAdapter {
         //if enter key is pressed in the welcome page it will go to game page and stop the welcome page music
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             gameState = GameState.GamePage;
+            inGame_music.stop();
+            userCar.fullStop();
             intro_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
         }
 
         // if escape key was pressed in the welcome page it will got to the game over page
@@ -250,11 +269,11 @@ public class MyGdxGame extends ApplicationAdapter {
         font.draw(batch, driver, 70, 200);
         redFont.draw(batch, powerUpFont, 200, 130);
         timer.drawTime(batch);
-/*
+
         for (Obstacle checkpoint : checkpoints) {
             checkpoint.draw(batch);
         }
-        */
+
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
         aiCar.getSprite().draw(batch);
@@ -279,7 +298,7 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (numberOfLaps == 0) {                         /////////////////////////
+        if (numberOfLaps == 3) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.LevelCompleted;
         }
@@ -294,10 +313,6 @@ public class MyGdxGame extends ApplicationAdapter {
         createFinishLine2();
         checkInput();
         batch.begin();
-        batch.draw(backGround2, 0, 0);
-        batch.draw(board, 50, 20, 400, 200);
-        font.draw(batch, driver, 70, 200);
-        redFont.draw(batch, powerUpFont, 200, 130);
         for (Obstacle checkpoint : checkpoints2) {
             checkpoint.draw(batch);
         }
@@ -305,8 +320,16 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Obstacle finishLinePoint : finishLineLevel2) {
             finishLinePoint.draw(batch);
         }
+
+        batch.draw(backGround2, 0, 0);
+        batch.draw(board, 50, 20, 400, 200);
+        font.draw(batch, driver, 70, 200);
+        redFont.draw(batch, powerUpFont, 200, 130);
+
+
+
         timer2.drawTime(batch);
-        if (numberOfLaps2 == 1) {                         /////////////////////////
+        if (numberOfLaps2 == 5) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.Level2Completed;
         }
@@ -336,6 +359,8 @@ public class MyGdxGame extends ApplicationAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             inGame_music.stop();
+            carEngine2.stop();
+            carEngine1.stop();
             userCar.fullStop();
             userCar.setX(450);
             userCar.setY(580);
@@ -360,6 +385,8 @@ public class MyGdxGame extends ApplicationAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             inGame_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
             userCar.fullStop();
             userCar.setX(450);
             userCar.setY(580);
@@ -371,6 +398,30 @@ public class MyGdxGame extends ApplicationAdapter {
         // here we transit to another level
     }
 
+    public void renderLevel3Completed() {
+        batch.begin();
+        batch.draw(levelCompleted, 250, 355);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            intro_music.stop();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            gameState = GameState.GameOver;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+            inGame_music.stop();
+            carEngine1.stop();
+            carEngine2.stop();
+            userCar.fullStop();
+
+            gameState = GameState.WelcomePage;
+        }
+
+        batch.end();
+    }
+        // here we transit to another level
+
     public void renderLevel3(){
 
         inGame_music.play();
@@ -380,6 +431,15 @@ public class MyGdxGame extends ApplicationAdapter {
         createFinishLineLevel3();
         batch.begin();
 
+        for (Obstacle grass:slowOnGrassLevel3) {
+            grass.draw(batch);
+        }
+        for (Obstacle checkpoint : checkpoints3) {
+            checkpoint.draw(batch);
+        }
+        for (Obstacle finishLinePoint : finishLineLevel3) {
+            finishLinePoint.draw(batch);
+        }
 
         batch.draw(backGroundLevel3, 0, 0);
 
@@ -387,9 +447,19 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Obstacle grass:slowOnGrassLevel3) {
             grass.draw(batch);
         }
+
+        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
+            outSideItemLevel3.draw(batch);
+        }
+
+
         for (Obstacle checkpoint : checkpoints3) {
             checkpoint.draw(batch);
         }
+        for (Obstacle finishLinePoint : finishLineLevel3) {
+            finishLinePoint.draw(batch);
+        }
+
 
         batch.draw(gpLogo, 680, 167, 300, 100);
         batch.draw(board, 25, 20, 300, 150);
@@ -402,19 +472,20 @@ public class MyGdxGame extends ApplicationAdapter {
         checkObstaclesLevel3(userCar);
         checkGrassLevel3(userCar);
 
-
-        for (Obstacle powerUp3 : powerUpsLevel3) {
-            powerUp3.draw(batch);
+        if (numberOfLaps3 == 7) {                         /////////////////////////
+            // game state is level complete
+            gameState = GameState.Level3Completed;
         }
-        powerUpLevel3(userCar);
 
 
+            for (Obstacle powerUp3 : powerUpsLevel3) {
+                powerUp3.draw(batch);
+            }
+            powerUpLevel3(userCar);
 
-        userCar.getSprite().draw(batch);
-        userCar.updatePosition();
-        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
-            outSideItemLevel3.draw(batch);
-        }
+            userCar.getSprite().draw(batch);
+            userCar.updatePosition();
+
         batch.end();
 
     }
@@ -510,14 +581,15 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void createCheckPoints3() {
         checkpoints3 = new ArrayList<Obstacle>();
-        checkpoint = new Obstacle("wall_0.jpg", 250, 580, 5, 96);
-        checkpoint1 = new Obstacle("wall_0.jpg", 700, 580, 5, 96);
-        checkpoint2 = new Obstacle("wall_1.jpg", 460, 160, 96, 5);
+        checkpoint = new Obstacle("wall_0.jpg", 250, 600, 5, 96);//
+        checkpoint1 = new Obstacle("wall_0.jpg", 700, 600, 5, 96);//
+        checkpoint2 = new Obstacle("wall_1.jpg", 390, 150, 96, 5);
         checkpoint3 = new Obstacle("wall_0.jpg", 750, 54, 5, 96);
         checkpoint4 = new Obstacle("wall_0.jpg", 250, 455, 5, 90);
-        checkpoint6 = new Obstacle("wall_1.jpg", 970, 370, 96, 5);
         checkpoint5 = new Obstacle("wall_1.jpg", 1120, 500, 96, 5);
-        checkpoint7 = new Obstacle("wall_1.jpg", 600, 420, 96, 5);
+        checkpoint6 = new Obstacle("wall_1.jpg", 950, 370, 96, 5);//
+        checkpoint7 = new Obstacle("wall_1.jpg", 570, 420, 96, 5);//
+
         checkpoints3.add(checkpoint);
         checkpoints3.add(checkpoint1);
         checkpoints3.add(checkpoint2);
@@ -641,7 +713,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
     public void createFinishLineLevel3(){
         finishLineLevel3=new ArrayList<Obstacle>(1);
-        finishLine3=new Obstacle("wall_0.jpg",550,615,5,96 );
+        finishLine3=new Obstacle("wall_0.jpg",400,600,5,96 );
         finishLineLevel3.add(finishLine3);
     }
 
@@ -777,7 +849,8 @@ public class MyGdxGame extends ApplicationAdapter {
         return false;
     }
     public boolean checkFinishLine3(int[] arr) {
-        if (checkArray2(arr)) {
+
+        if (checkArray3(arr)) {
             if (userCar.collidesWith(finishLineLevel3.get(0).getCollisionRectangle())) {
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = 0;
@@ -799,8 +872,13 @@ public class MyGdxGame extends ApplicationAdapter {
         else return false;
     }
 
+    public boolean checkArray3(int[] arr) {
+        if ((arr[0] == 1) && (arr[1] == 1) && (arr[2] == 1) && (arr[3] == 1) && (arr[4] == 1) && (arr[5] == 1) && (arr[6] == 1)&& (arr[7] == 1))
+            return true;
+        else return false;
+    }
+
     public void checkRoutePoints(UserCar userCar) {
-        driver = "";
 
         for (int j = 0; j < checkpoints.size(); j++) {
             if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
@@ -829,7 +907,6 @@ public class MyGdxGame extends ApplicationAdapter {
         }
     }
     public void checkRoutePoints2(UserCar userCar) {
-        driver = "";
 
         for (int j = 0; j < checkpoints2.size(); j++) {
             if (userCar.collidesWith(checkpoints2.get(j).getCollisionRectangle())) {
@@ -859,7 +936,6 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void checkRoutePoints3(UserCar userCar) {
-        driver = "";
 
         for (int j = 0; j < checkpoints3.size(); j++) {
             if (userCar.collidesWith(checkpoints3.get(j).getCollisionRectangle())) {
@@ -868,7 +944,7 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
 
-        if (checkArray2(arr3)) {
+        if (checkArray3(arr3)) {
             if (checkFinishLine3(arr3)) {
                 numberOfLaps3++;
                 if (numberOfLaps3 == 1) {
@@ -887,7 +963,6 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
-
 
     public void createTimer() {
         timer = new Timer();
@@ -916,11 +991,14 @@ public class MyGdxGame extends ApplicationAdapter {
         intro_music.dispose();
         inGame_music.dispose();
         powerUpEffect.dispose();
+        carEngine1.dispose();
+        carEngine2.dispose();
 
         redFont.dispose();
         bitmapFontFinishTime.dispose();
         backGround2.dispose();
         backGroundLevel3.dispose();
+
 
 
     }
