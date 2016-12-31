@@ -202,7 +202,7 @@ public class MyGdxGame extends ApplicationAdapter {
         backGroundLevel3=new Texture("BackGroundLevel3.jpg");
 
         levelCompleted = new Texture("level.png");
-        gameOver = new Texture("game-over.jpg");
+        gameOver = new Texture("GameOver.png");
 
         gpLogo = new Texture("Gplogo.png");
         board = new Texture("Board.png");
