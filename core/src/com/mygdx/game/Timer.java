@@ -1,58 +1,39 @@
 package com.mygdx.game;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created by fatih on 2016-11-29.
+ * Created by Rossy on 30.11.2016 г..
  */
 public class Timer {
+    SpriteBatch batch;
+    private BitmapFont timerFont;
+    //private float deltaTime = 0;
+    private final long startTime;
+    private long elapsedTime;
+    String time;
 
-    private final long nanosPerMilli = 1000000;
-    private long startTime = 0;
-    private long stopTime = 0;
-    private boolean running=true;
+    public Timer() {
+        timerFont = new BitmapFont();
+        timerFont.setColor(Color.WHITE);
+        batch = new SpriteBatch();
+        startTime = TimeUtils.millis();
 
-    public void start(){
-        this.startTime=System.nanoTime();
-        this.running=true;
+        // timerFont.getData().setScale(2,1);
+
     }
-    public void stop(){
-        this.stopTime=System.nanoTime();
-        this.running=false;
-    }
-    public void reset(){
-        this.startTime=0;
-        this.stopTime=0;
-        this.running=false;
-    }
-    //get elapsed milliseconds
-    public long getElapsedMilliseconds() {
-        long elapsed;
-        if (running) {
-            elapsed = System.nanoTime() - startTime;
-        } else {
-            elapsed = stopTime - startTime;
-        }
-        return elapsed / nanosPerMilli;
-    }
-    public String formatTime(final long millis){
-        int minutesComponent = (int) (millis/(1000*60));
-        int secondsComponent =(int) ((millis/1000) % 60);
-        int hunderdthsComponent=(int) ((millis/10) %100);
-        String paddedMinutes = String.format("%02d",minutesComponent);
-        String paddedSeconds = String.format("%02d",secondsComponent);
-        String paddedHunderths = String.format("%02d",hunderdthsComponent);
-        String formattedTime;
-        if (millis>0 && millis<3600000){
-            formattedTime = paddedMinutes+":"+paddedSeconds+":"+paddedHunderths;
-        }
-        else {
-            formattedTime=59+":"+59+":"+99;
-        }
-        return formattedTime;
-    }
-    //get formatted elapsed time
-    public String getElapsed(){
-        String timeFormatted="";
-        timeFormatted = this.formatTime(this.getElapsedMilliseconds());
-        return timeFormatted;
+
+
+    public void drawTime(SpriteBatch batch) {
+        elapsedTime = TimeUtils
+                .timeSinceMillis(startTime);
+        time = String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
+                TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100);
+        timerFont.draw(batch, time, 190, 40);
     }
 }
