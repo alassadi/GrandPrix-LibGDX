@@ -57,6 +57,7 @@ public class MyGdxGame extends ApplicationAdapter {
     ArrayList<Obstacle> checkpoints2;
     ArrayList<Obstacle> checkpoints3;
     ArrayList<Obstacle> slowOnGrass = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> slowOnGrassLevel2 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> slowOnGrassLevel3 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItems = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItemsLevel2 = new ArrayList<Obstacle>();
@@ -288,7 +289,7 @@ public class MyGdxGame extends ApplicationAdapter {
             speedMeter();
         }
         userCar.deceleration((float)0.02);
-            speedMeter();
+        speedMeter();
 
     }
 
@@ -424,6 +425,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createCheckPoints2();
         checkRoutePoints2(userCar);
         createFinishLine2();
+        createSlowOnGrassLevel2();
         checkInput();
         batch.begin();
         batch.draw(backGround2, 0, 0);
@@ -456,6 +458,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
+        checkGrassLevel2(userCar);
         aiCar.getSprite().draw(batch);
         aiCar.updatePosition();
         for (Obstacle outSideItemLevel2 : outSideItemsLevel2 ) {
@@ -658,22 +661,23 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void createObstaclesLevel2() {
-        tire1 = new Obstacle("Tire1.png", 410, 230, 90, 37);
+        tire1 = new Obstacle("Tire1.png", 510, 390, 90, 37);
         outSideItemsLevel2.add(tire1);
-        tire2 = new Obstacle("Tire2.png", 45, 380, 37, 200);
+        tire2 = new Obstacle("Tire2.png", 770, 370, 37, 200);
         outSideItemsLevel2.add(tire2);
-        tire3 = new Obstacle("Tire3.png", 400, 725, 400, 37);
+        tire3 = new Obstacle("Tire3.png", 600, 10, 400, 37);
         outSideItemsLevel2.add(tire3);
-        tire4 = new Obstacle("Tire1.png", 320, 230, 90, 37);
+        tire4 = new Obstacle("Tire1.png", 260, 535, 90, 37);
         outSideItemsLevel2.add(tire4);
-        tree1 = new Obstacle("tree.png", 1050, 350, 100, 100);
+        tree1 = new Obstacle("tree.png", 600, 180, 100, 100);
         outSideItemsLevel2.add(tree1);
-        tree2 = new Obstacle("Tree1.png", 650, 200, 200, 60);
+        tree2 = new Obstacle("Tree1.png", 550, 690, 200, 60);
         outSideItemsLevel2.add(tree2);
-        tree3 = new Obstacle("tree.png", 690, 450, 90, 80);
+        tree3 = new Obstacle("tree.png", 1030, 155, 90, 80);
         outSideItemsLevel2.add(tree3);
-        tree4 = new Obstacle("tree.png", 690, 350, 90, 80);
+        tree4 = new Obstacle("tree.png", 690, 180, 90, 80);
         outSideItemsLevel2.add(tree4);
+
     }
 
     public void  createObstacleLevel3(){
@@ -813,9 +817,40 @@ public class MyGdxGame extends ApplicationAdapter {
         slowOnGrass.add(grass14);
         grass15 = new Obstacle("grass.png", 1020, 430, 150, 40);
         slowOnGrass.add(grass15);
+    }
 
+    public void createSlowOnGrassLevel2(){
+        grass1=new Obstacle("grass.png", 0,710,1300,50);
+        slowOnGrassLevel2.add(grass1);
+        grass2=new Obstacle("grass.png", 980,0,300,40);
+        slowOnGrassLevel2.add(grass2);
+        grass3=new Obstacle("grass.png", 0,0,420,420);
+        slowOnGrassLevel2.add(grass3);
+        grass4=new Obstacle("grass.png", 0,400,120,400);
+        slowOnGrassLevel2.add(grass4);
+        grass5=new Obstacle("grass.png", 0,420,150,40);
+        slowOnGrassLevel2.add(grass5);
+        grass6=new Obstacle("grass.png", 0,650,150,60);
+        slowOnGrassLevel2.add(grass6);
+        grass7=new Obstacle("grass.png", 300,540,480,30);
+        slowOnGrassLevel2.add(grass7);
+        grass8=new Obstacle("grass.png", 942,310,20,450);
+        slowOnGrassLevel2.add(grass8);
+        grass9=new Obstacle("grass.png", 860,680,150,40);
+        slowOnGrassLevel2.add(grass9);
+        grass10=new Obstacle("grass.png", 1230,0,50,760);
+        slowOnGrassLevel2.add(grass10);
+        grass11=new Obstacle("grass.png", 560,165,250,100);
+        slowOnGrassLevel2.add(grass11);
+        grass12=new Obstacle("grass.png", 1082,205,28,370);
+        slowOnGrassLevel2.add(grass12);
+        grass13=new Obstacle("grass.png", 400,380,80,40);
+        slowOnGrassLevel2.add(grass13);
+        grass15=new Obstacle("grass.png",730,260,80,300);
+        slowOnGrassLevel2.add(grass15);
 
     }
+
     public void createSlowOnGrassLevel3(){
         grass1=new Obstacle("grass.png", 0,0,600,40);
         slowOnGrassLevel3.add(grass1);
@@ -847,7 +882,6 @@ public class MyGdxGame extends ApplicationAdapter {
         slowOnGrassLevel3.add(grass14);
         grass15=new Obstacle("grass.png",700,400,140,20);
         slowOnGrassLevel3.add(grass15);
-
     }
 
     //If collides with Obstacle
@@ -882,6 +916,22 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
+
+    public void checkGrassLevel2(UserCar userCar){
+        for (int i=0; i<slowOnGrassLevel2.size(); i++){
+            if (userCar.collidesWith(slowOnGrassLevel2.get(i).getCollisionRectangle())){
+                userCar.slowOnGrass();
+            }
+        }
+    }
+
+    public void checkGrassLevel3(UserCar userCar){
+        for (int i=0; i<slowOnGrassLevel3.size(); i++){
+            if (userCar.collidesWith(slowOnGrassLevel3.get(i).getCollisionRectangle())){
+                userCar.slowOnGrass();
+            }
+        }
+    }
     public void checkOilStains(UserCar userCar) {
         for (int i = 0; i < oilStains.size(); i++) {
             leftOrRight = r.nextInt(2);
@@ -909,13 +959,6 @@ public class MyGdxGame extends ApplicationAdapter {
 
                 userCar.spinOnStain(leftOrRight);
                 //userCar.setAngle(userCar.tempAngle);
-            }
-        }
-    }
-    public void checkGrassLevel3(UserCar userCar){
-        for (int i=0; i<slowOnGrassLevel3.size(); i++){
-            if (userCar.collidesWith(slowOnGrassLevel3.get(i).getCollisionRectangle())){
-                userCar.slowOnGrass();
             }
         }
     }
