@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class AiCar extends Car {
     int i = 0;
+
     public AiCar(String textureFileName, float x, float y) {
         super(textureFileName, x, y);
         getSprite().setOriginCenter();
@@ -21,20 +22,19 @@ public class AiCar extends Car {
     }
 
     public void Route(ArrayList<Vector2> waypoints, double speed) {
-        setAngle((float)(Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f);
-        getSprite().setRotation((float)((Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f));
+        setAngle((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f);
+        getSprite().setRotation((float) ((Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f));
         accelerate(speed, (float) 0.05);
 //        if (Math.abs(waypoints.get(i).x - getSprite().getX())>35 || Math.abs(waypoints.get(i).y - getSprite().getY())>35) {
 //
 //        }
-        if (Math.abs(waypoints.get(i).x - getSprite().getX())<50 && Math.abs(waypoints.get(i).y - getSprite().getY())<50) {
+        if (Math.abs(waypoints.get(i).x - getSprite().getX()) < 50 && Math.abs(waypoints.get(i).y - getSprite().getY()) < 50) {
             i++;
             //System.out.print(i);
         }
-        if (i==waypoints.size()){
-            i=0;
+        if (i == waypoints.size()) {
+            i = 0;
         }
 
     }
 }
-

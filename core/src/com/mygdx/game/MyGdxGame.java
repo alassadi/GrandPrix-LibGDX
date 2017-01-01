@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.mygdx.game.UserCar.maxSpeed;
+
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -37,6 +39,9 @@ public class MyGdxGame extends ApplicationAdapter {
     GameState gameState = GameState.WelcomePage;
 
     UserCar userCar3;
+
+
+
 
 
     AiCar aiCar;
@@ -73,6 +78,8 @@ public class MyGdxGame extends ApplicationAdapter {
     int numberOfLaps3 = 0;
     Random r = new Random();
     int leftOrRight;
+
+
     Timer timer;
 
     Timer timer2;
@@ -99,6 +106,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
     static CharSequence driver = " ";
     static CharSequence powerUpFont = " ";
+    static CharSequence speed= " ";
+
+
+
 
     private ArrayList<Vector2> levelOneWaypoints() {
         ArrayList<Vector2> waypoints = new ArrayList<Vector2>();
@@ -168,6 +179,7 @@ public class MyGdxGame extends ApplicationAdapter {
     BitmapFont font;
     BitmapFont redFont;
     BitmapFont bitmapFontFinishTime;
+    BitmapFont speedMeter;
 
 
     private enum GameState {
@@ -193,7 +205,7 @@ public class MyGdxGame extends ApplicationAdapter {
         backGroundLevel3=new Texture("BackGroundLevel3.jpg");
 
         levelCompleted = new Texture("level.png");
-        gameOver = new Texture("game-over.jpg");
+        gameOver = new Texture("GameOver.png");
 
         gpLogo = new Texture("Gplogo.png");
         board = new Texture("Board.png");
@@ -203,6 +215,10 @@ public class MyGdxGame extends ApplicationAdapter {
         redFont.setColor(Color.RED);
         bitmapFontFinishTime = new BitmapFont();
         bitmapFontFinishTime.setColor(Color.WHITE);
+
+        speedMeter=new BitmapFont();
+        speedMeter.setColor(Color.WHITE);
+        speedMeter.getData().setScale(2,1);
 
         intro_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
         inGame_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
@@ -217,6 +233,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createGrass();
         createPowerUps();
         createObstaclesLevel2();
+
 
         createTimer();
         createTimer2();
@@ -238,9 +255,9 @@ public class MyGdxGame extends ApplicationAdapter {
         userCar = new UserCar("userCar1.png", 550, 620, 4);
     }
 
-    public void createUserCar2() {
+    /*public void createUserCar2() {
         userCar2 = new UserCar("userCar1.png", userCarPositionX, userCarPositionY, 4);
-    }
+    }*/
 
     public void createAiCar() {
         aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
@@ -250,22 +267,28 @@ public class MyGdxGame extends ApplicationAdapter {
     }
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            userCar.accelerate(4,(float)0.05);
+            userCar.accelerate(maxSpeed,(float)0.05);
             carEngine1.play();
+            speedMeter();
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             userCar.breaks((float)0.15);
             carEngine2.play();
+            speedMeter();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             userCar.turnLeft();
             carEngine1.play();
+            speedMeter();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             userCar.turnRight();
             carEngine1.play();
+            speedMeter();
         }
         userCar.deceleration((float)0.02);
+            speedMeter();
 
     }
 
@@ -349,10 +372,10 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.draw(gpLogo, 300, 450, 300, 100);
 
         batch.draw(board, 20, 20, 300, 150);
-        font.draw(batch, driver, 70, 200);
-
-        redFont.draw(batch, powerUpFont, 200, 130);
+        font.draw(batch, driver, 30, 160);
+        redFont.draw(batch, powerUpFont, 190, 100);
         timer.drawTime(batch);
+        speedMeter.draw(batch, speed,200,150);
 
 
         for (Obstacle checkpoint : checkpoints) {
@@ -404,9 +427,10 @@ public class MyGdxGame extends ApplicationAdapter {
         checkInput();
         batch.begin();
         batch.draw(backGround2, 0, 0);
-        batch.draw(board, 20, 20, 400, 200);
-        font.draw(batch, driver, 70, 200);
-        redFont.draw(batch, powerUpFont, 200, 130);
+        batch.draw(board, 20, 20, 300, 150);
+        font.draw(batch, driver, 30, 160);
+        redFont.draw(batch, powerUpFont, 190, 100);
+        speedMeter.draw(batch, speed,200,150);
         for (Obstacle checkpoint : checkpoints2) {
             checkpoint.draw(batch);
         }
@@ -452,6 +476,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         userCar.fullStop();
         batch.draw(levelCompleted, 250, 355);
+        driver=" ";
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -469,6 +494,9 @@ public class MyGdxGame extends ApplicationAdapter {
             userCar.setX(450);
             userCar.setY(580);
 
+            //aiCarPositionX = 450f;
+            // aiCarPositionY = 625f;
+           // aiCarPositionY = 625f;
             createAiCar();
             createTimer2();
             driver = "";
@@ -482,6 +510,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public void renderLevel2Completed() {
         batch.begin();
         batch.draw(levelCompleted, 250, 355);
+        driver=" ";
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -539,11 +568,7 @@ public class MyGdxGame extends ApplicationAdapter {
         checkRoutePoints3(userCar);
         createFinishLineLevel3();
         batch.begin();
-        batch.draw(backGroundLevel3, 0, 0);
 
-        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
-            outSideItemLevel3.draw(batch);
-        }
         for (Obstacle grass:slowOnGrassLevel3) {
             grass.draw(batch);
         }
@@ -554,13 +579,19 @@ public class MyGdxGame extends ApplicationAdapter {
             finishLinePoint.draw(batch);
         }
 
+        batch.draw(backGroundLevel3, 0, 0);
+
+        for (Obstacle outSideItemLevel3 : outSideItemsLevel3 ) {
+            outSideItemLevel3.draw(batch);
+        }
 
         batch.draw(gpLogo, 680, 167, 300, 100);
-        batch.draw(board, 25, 20, 300, 150);
+        batch.draw(board, 20, 20, 300, 150);
 
-        redFont.draw(batch, powerUpFont, 120, 100);
+        redFont.draw(batch, powerUpFont, 190, 100);
+        speedMeter.draw(batch, speed,200,150);
         timer3.drawTime(batch);
-        font.draw(batch, driver, 70, 200);
+        font.draw(batch, driver, 30, 160);
 
 
         checkObstaclesLevel3(userCar);
@@ -973,10 +1004,6 @@ public class MyGdxGame extends ApplicationAdapter {
                 powerUpsLevel2.remove(i);
                 userCar.boost();
                 powerUpEffect.play();
-
-                // aiCar2.getSprite().draw(batch);
-                // aiCar2.updatePosition();
-
                 return true;
             } else return false;
         }
@@ -1072,7 +1099,6 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void checkRoutePoints(UserCar userCar) {
-
         for (int j = 0; j < checkpoints.size(); j++) {
             if (userCar.collidesWith(checkpoints.get(j).getCollisionRectangle())) {
                 arr[j] = 1; // if the next is 0 set to zero else set one
@@ -1101,10 +1127,17 @@ public class MyGdxGame extends ApplicationAdapter {
                 System.out.print("driver value:" + driver);
                 lapTimes.add(timer.time);
 
-                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
+                //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                 System.out.print("LAP TIME: " + lapTimes.get(numberOfLaps-1));
             }
         }
+    }
+
+    public void speedMeter(){
+
+            float a= (float) userCar.getVelocity();
+
+            speed = String.format("%.0f"+" mph",a*50);
     }
     public void checkRoutePoints2(UserCar userCar) {
 
@@ -1114,7 +1147,6 @@ public class MyGdxGame extends ApplicationAdapter {
                 //		 to make sure the start last point is counted at the end not the first
             }
         }
-
 
         if (checkArray2(arr2)) {
             if (checkFinishLine(arr2)) {
@@ -1129,7 +1161,6 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void checkRoutePoints3(UserCar userCar) {
-
         for (int j = 0; j < checkpoints3.size(); j++) {
             if (userCar.collidesWith(checkpoints3.get(j).getCollisionRectangle())) {
                 arr3[j] = 1; // if the next is 0 set to zero else set one
@@ -1181,13 +1212,11 @@ public class MyGdxGame extends ApplicationAdapter {
         powerUpEffect.dispose();
         carEngine1.dispose();
         carEngine2.dispose();
-
+        speedMeter.dispose();
         redFont.dispose();
         bitmapFontFinishTime.dispose();
         backGround2.dispose();
         backGroundLevel3.dispose();
-
-
     }
 }
 

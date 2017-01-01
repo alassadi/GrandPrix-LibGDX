@@ -11,7 +11,7 @@ import static com.mygdx.game.MyGdxGame.powerUpFont;
 public class UserCar extends Car {
 
     double rotationRate = Math.PI / 70; // how fast it turns
-    private double maxSpeed;
+    static double maxSpeed;
     int boostCounter = 0;
 
     public UserCar(String textureFileName, float x, float y, double maxSpeed) {

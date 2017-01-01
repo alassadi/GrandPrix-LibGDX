@@ -11,11 +11,9 @@ import java.util.concurrent.TimeUnit;
 public class Timer {
     SpriteBatch batch;
     private BitmapFont timerFont;
-
     //private float deltaTime = 0;
     private final long startTime;
     private long elapsedTime;
-
     String time;
 
     public Timer() {
@@ -23,7 +21,11 @@ public class Timer {
         timerFont.setColor(Color.WHITE);
         batch = new SpriteBatch();
         startTime = TimeUtils.millis();
+
+        // timerFont.getData().setScale(2,1);
+
     }
+
 
     public void drawTime(SpriteBatch batch) {
         elapsedTime = TimeUtils
@@ -32,7 +34,6 @@ public class Timer {
                 TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
                 TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100);
-
-        timerFont.draw(batch, time, 30, 40);
+        timerFont.draw(batch, time, 190, 40);
     }
 }
