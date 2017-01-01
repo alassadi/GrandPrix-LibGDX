@@ -54,6 +54,7 @@ public class MyGdxGame extends ApplicationAdapter {
     ArrayList<Obstacle> slowOnGrass = new ArrayList<Obstacle>();
     ArrayList<Obstacle> slowOnGrassLevel3 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItems = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> outSideItemsLevel2 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItemsLevel3=new ArrayList<Obstacle>();
     ArrayList<Obstacle> oilStains = new ArrayList<Obstacle>();
     ArrayList<Obstacle> oilStains2 = new ArrayList<Obstacle>();
@@ -215,6 +216,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createObstacles();
         createGrass();
         createPowerUps();
+        createObstaclesLevel2();
 
         createTimer();
         createTimer2();
@@ -413,12 +415,6 @@ public class MyGdxGame extends ApplicationAdapter {
             finishLinePoint.draw(batch);
         }
 
-
-        batch.draw(backGround2, 0, 0);
-        batch.draw(board, 20, 20, 300, 150);
-        font.draw(batch, driver, 70, 200);
-        redFont.draw(batch, powerUpFont, 200, 130);
-
         timer2.drawTime(batch);
         if (numberOfLaps2 == 5) {                         /////////////////////////
             // game state is level complete
@@ -433,10 +429,15 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Obstacle oilStain : oilStains2) {
             oilStain.draw(batch);
         }
+
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
         aiCar.getSprite().draw(batch);
         aiCar.updatePosition();
+        for (Obstacle outSideItemLevel2 : outSideItemsLevel2 ) {
+            outSideItemLevel2.draw(batch);
+        }
+        checkObstaclesLevel2(userCar);
 //        aiCar2.getSprite().draw(batch);
 //        aiCar2.updatePosition();
         ArrayList<Vector2> waypoints2 = levelTwoWaypoints();
@@ -625,6 +626,25 @@ public class MyGdxGame extends ApplicationAdapter {
         outSideItems.add(tree4);
     }
 
+    public void createObstaclesLevel2() {
+        tire1 = new Obstacle("Tire1.png", 410, 230, 90, 37);
+        outSideItemsLevel2.add(tire1);
+        tire2 = new Obstacle("Tire2.png", 45, 380, 37, 200);
+        outSideItemsLevel2.add(tire2);
+        tire3 = new Obstacle("Tire3.png", 400, 725, 400, 37);
+        outSideItemsLevel2.add(tire3);
+        tire4 = new Obstacle("Tire1.png", 320, 230, 90, 37);
+        outSideItemsLevel2.add(tire4);
+        tree1 = new Obstacle("tree.png", 1050, 350, 100, 100);
+        outSideItemsLevel2.add(tree1);
+        tree2 = new Obstacle("Tree1.png", 650, 200, 200, 60);
+        outSideItemsLevel2.add(tree2);
+        tree3 = new Obstacle("tree.png", 690, 450, 90, 80);
+        outSideItemsLevel2.add(tree3);
+        tree4 = new Obstacle("tree.png", 690, 350, 90, 80);
+        outSideItemsLevel2.add(tree4);
+    }
+
     public void  createObstacleLevel3(){
         tire1= new Obstacle("Tire2.png",490, 320, 37, 200 );
         outSideItemsLevel3.add(tire1);
@@ -807,6 +827,15 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
+
+    public void checkObstaclesLevel2(UserCar userCar){
+        for (int i= 0; i<outSideItemsLevel2.size(); i++){
+            if (userCar.collidesWith(outSideItemsLevel2.get(i).getCollisionRectangle())){
+                userCar.fullStop();
+            }
+        }
+    }
+
     public void checkObstaclesLevel3(UserCar userCar){
         for (int i= 0; i<outSideItemsLevel3.size(); i++){
             if (userCar.collidesWith(outSideItemsLevel3.get(i).getCollisionRectangle())){
