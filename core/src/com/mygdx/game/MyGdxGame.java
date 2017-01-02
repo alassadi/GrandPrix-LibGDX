@@ -152,6 +152,7 @@ public class MyGdxGame extends ApplicationAdapter {
         waypoints.add(new Vector2(520, 485));
         waypoints.add(new Vector2(165, 490));
         waypoints.add(new Vector2(125, 590));
+        waypoints.add(new Vector2(165, 625));
         return waypoints;
     }
 
@@ -164,17 +165,18 @@ public class MyGdxGame extends ApplicationAdapter {
         waypoints.add(new Vector2(650, 330));
         waypoints.add(new Vector2(750, 270));
         waypoints.add(new Vector2(900, 300));
-        waypoints.add(new Vector2(1000, 400));
-        waypoints.add(new Vector2(1060, 650));
+        waypoints.add(new Vector2(975, 400));
+        waypoints.add(new Vector2(1025, 650));
         //waypoints.add(new Vector2(1125, 575));
-        waypoints.add(new Vector2(1200, 425));
+        waypoints.add(new Vector2(1175, 425));
         waypoints.add(new Vector2(1125, 105));
         waypoints.add(new Vector2(1025, 55));
         waypoints.add(new Vector2(400, 100));
         waypoints.add(new Vector2(340, 175));
         waypoints.add(new Vector2(300, 525));
-        waypoints.add(new Vector2(150, 575));
-        waypoints.add(new Vector2(250, 655));
+        waypoints.add(new Vector2(150, 525));
+        //waypoints.add(new Vector2(250, 585));
+        waypoints.add(new Vector2(260, 655));
         return waypoints;
     }
 
