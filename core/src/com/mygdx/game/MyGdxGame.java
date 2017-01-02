@@ -109,6 +109,7 @@ public class MyGdxGame extends ApplicationAdapter {
     static CharSequence driver = " ";
     static CharSequence powerUpFont = " ";
     static CharSequence speed= " ";
+    static CharSequence lapScore="";
 
 
 
@@ -184,6 +185,8 @@ public class MyGdxGame extends ApplicationAdapter {
     BitmapFont redFont;
     BitmapFont bitmapFontFinishTime;
     BitmapFont speedMeter;
+    BitmapFont scoreBoard;
+
 
 
     private enum GameState {
@@ -223,6 +226,11 @@ public class MyGdxGame extends ApplicationAdapter {
         speedMeter=new BitmapFont();
         speedMeter.setColor(Color.WHITE);
         speedMeter.getData().setScale(2,1);
+
+
+        scoreBoard=new BitmapFont();
+        scoreBoard.setColor(Color.WHITE);
+        scoreBoard.getData().setScale(2,1);
 
         intro_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
         inGame_music = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic1.mp3"));
@@ -285,12 +293,10 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             userCar.turnLeft();
-           // carEngine1.play();
             speedMeter();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             userCar.turnRight();
-            //carEngine1.play();
             speedMeter();
         }
         userCar.deceleration((float)0.02);
@@ -376,6 +382,7 @@ public class MyGdxGame extends ApplicationAdapter {
         redFont.draw(batch, powerUpFont, 190, 100);
         timer.drawTime(batch);
         speedMeter.draw(batch, speed,200,150);
+        scoreBoard.draw(batch, lapScore, 30,140);
 
 
         for (Obstacle checkpoint : checkpoints) {
@@ -429,11 +436,14 @@ public class MyGdxGame extends ApplicationAdapter {
         createSlowOnGrassLevel2();
         checkInput();
         batch.begin();
+
         batch.draw(backGround2, 0, 0);
         batch.draw(board, 20, 20, 300, 150);
         font.draw(batch, driver, 30, 160);
         redFont.draw(batch, powerUpFont, 190, 100);
         speedMeter.draw(batch, speed,200,150);
+        scoreBoard.draw(batch, lapScore, 30,140);
+
 
         timer2.drawTime(batch);
         if (numberOfLaps2 == 4)
@@ -481,10 +491,13 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void renderLevelCompleted() {
+
+        driver=" ";
+        lapScore=" ";
         batch.begin();
         userCar.fullStop();
         batch.draw(levelCompleted, 250, 355);
-        driver=" ";
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -497,8 +510,9 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             carEngine2.stop();
             carEngine1.stop();
+
             userCar.fullStop();
-            userCar.fullStop();
+
             userCar.setX(350);
             userCar.setY(580);
 
@@ -517,6 +531,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void renderLevel2Completed() {
         batch.begin();
+        userCar.fullStop();
         batch.draw(levelCompleted, 250, 355);
         driver=" ";
 
@@ -532,8 +547,9 @@ public class MyGdxGame extends ApplicationAdapter {
             carEngine1.stop();
             carEngine2.stop();
             userCar.fullStop();
-            userCar.setX(375f);
-            userCar.setY(595f);
+            userCar.setX(450);
+            userCar.setY(580);
+
             //aiCarPositionX = 450f;
             //aiCarPositionY = 625f;
             createAiCar();
@@ -1236,10 +1252,11 @@ public class MyGdxGame extends ApplicationAdapter {
             if (checkFinishLine(arr)) {
                 numberOfLaps++;
                 System.out.println(String.format("done with lap %d.", (numberOfLaps)));
-                driver = String.format("Finished Lap %d.", numberOfLaps);
+                driver = String.format("Finished Lap %d." ,numberOfLaps);
                 System.out.print("driver value:" + driver);
                 lapTimes.add(timer.time);
 
+                lapScore= String.format("%s", lapTimes.get(numberOfLaps-1));
                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                 System.out.print("LAP TIME: " + lapTimes.get(numberOfLaps-1));
             }
@@ -1266,6 +1283,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 numberOfLaps2++;
                 driver = String.format("Finished Lap %d.", numberOfLaps2);
                 lapTimes2.add(timer2.time);
+                lapScore= String.format("%s", lapTimes2.get(numberOfLaps2-1));
                 // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                 System.out.print(lapTimes2.get(numberOfLaps2 - 1));
             }
@@ -1286,6 +1304,7 @@ public class MyGdxGame extends ApplicationAdapter {
                     numberOfLaps3++;
                     driver = String.format("Finished Lap %d.", numberOfLaps3);
                     lapTimes2.add(timer3.time);
+                    lapScore= String.format("%s", lapTimes2.get(numberOfLaps3-1));
                     // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                     System.out.print(lapTimes3.get(numberOfLaps3 - 1));
                 }
