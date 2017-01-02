@@ -261,7 +261,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void createUserCar() {
-        userCar = new UserCar("userCar1.png", 550, 620, 4);
+        userCar = new UserCar("userCar1.png", 470, 620, 4);
     }
 
     /*public void createUserCar2() {
@@ -288,12 +288,10 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             userCar.turnLeft();
-            carEngine1.play();
             speedMeter();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             userCar.turnRight();
-            carEngine1.play();
             speedMeter();
         }
         userCar.deceleration((float)0.02);
@@ -421,7 +419,7 @@ public class MyGdxGame extends ApplicationAdapter {
             inGame_music.stop();
             gameState = GameState.GameOver;
         }
-        if (numberOfLaps == 3) {                         /////////////////////////
+        if (numberOfLaps == 1) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.LevelCompleted;
         }
@@ -437,6 +435,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createSlowOnGrassLevel2();
         checkInput();
         batch.begin();
+
         batch.draw(backGround2, 0, 0);
         batch.draw(board, 20, 20, 300, 150);
         font.draw(batch, driver, 30, 160);
@@ -506,7 +505,7 @@ public class MyGdxGame extends ApplicationAdapter {
             carEngine2.stop();
             carEngine1.stop();
 
-            userCar.setX(450);
+            userCar.setX(350);
             userCar.setY(580);
 
             //aiCarPositionX = 450f;
@@ -984,7 +983,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
     public void createFinishLine2() {
         finishLineLevel2 = new ArrayList<Obstacle>(1);
-        finishLine2 = new Obstacle("wall_0.jpg", 450, 580, 5, 96);
+        finishLine2 = new Obstacle("wall_0.jpg", 360, 580, 5, 96);
         finishLineLevel2.add(finishLine2);
 
     }
@@ -1211,6 +1210,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 System.out.println(String.format("done with lap %d.", (numberOfLaps2)));
                 driver = String.format("Finished Lap %d.", numberOfLaps2);
                 lapTimes2.add(timer2.time);
+                lapScore= String.format("%s", lapTimes2.get(numberOfLaps2-1));
                 // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                 System.out.print(lapTimes2.get(numberOfLaps2 - 1));
             }
@@ -1232,6 +1232,7 @@ public class MyGdxGame extends ApplicationAdapter {
                     System.out.println(String.format("done with lap %d.", (numberOfLaps3)));
                     driver = String.format("Finished Lap %d.", numberOfLaps3);
                     lapTimes2.add(timer3.time);
+                    lapScore= String.format("%s", lapTimes2.get(numberOfLaps3-1));
                     // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
                     System.out.print(lapTimes3.get(numberOfLaps3 - 1));
                 }
