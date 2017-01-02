@@ -5,15 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -65,9 +62,9 @@ public class MyGdxGame extends ApplicationAdapter {
     ArrayList<Obstacle> outSideItems = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItemsLevel2 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> outSideItemsLevel3=new ArrayList<Obstacle>();
-    ArrayList<Obstacle> oilStains = new ArrayList<Obstacle>();
-    ArrayList<Obstacle> oilStains2 = new ArrayList<Obstacle>();
-    ArrayList<Obstacle> oilStains3 = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> oilSpills = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> oilSpills2 = new ArrayList<Obstacle>();
+    ArrayList<Obstacle> oilSpills3 = new ArrayList<Obstacle>();
     ArrayList<Obstacle> finishLine;
     ArrayList<Obstacle> finishLineLevel2;
     ArrayList<Obstacle> finishLineLevel3;
@@ -251,9 +248,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
         createPowerUpsLevel2();
         createPowerUpsLevel3();
-        createOilStains();
-        createOilStains2();
-        createOilStains3();
+        createOilSpills();
+        createOilSpills2();
+        createOilSpills3();
 
     }
 
@@ -392,8 +389,8 @@ public class MyGdxGame extends ApplicationAdapter {
         for (Obstacle checkpoint : checkpoints) {
             checkpoint.draw(batch);
         }
-        for (Obstacle oilStain : oilStains) {
-            oilStain.draw(batch);
+        for (Obstacle oilSpill : oilSpills) {
+            oilSpill.draw(batch);
         }
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
@@ -412,8 +409,8 @@ public class MyGdxGame extends ApplicationAdapter {
         checkRoutePoints(userCar);
         checkObstacles(userCar);
         powerUp(userCar);
-        checkOilStains(userCar);
-        checkOilStainsAi(aiCar);
+        checkOilSpills(userCar);
+        checkOilSpillsAi(aiCar);
         checkCarCollision(userCar, 1);
         //checkAiCarCollision(userCar, 1);  //we don't use this for now, because it does not work well with the previous one (both are triggered at the same time)
         for (Obstacle powerup : powerUps) {
@@ -460,16 +457,16 @@ public class MyGdxGame extends ApplicationAdapter {
             gameState = GameState.Level2Completed;
         }
         checkCarCollision(userCar, 2);
-        checkOilStains2(userCar);
-        checkOilStains2Ai(aiCar, aiCar2);
+        checkOilSpills2(userCar);
+        checkOilSpills2Ai(aiCar, aiCar2);
 
         powerUpLevel2(userCar);
 
         for (Obstacle powerup : powerUpsLevel2) {
             powerup.draw(batch);
         }
-        for (Obstacle oilStain : oilStains2) {
-            oilStain.draw(batch);
+        for (Obstacle oilSpill : oilSpills2) {
+            oilSpill.draw(batch);
         }
 
         userCar.getSprite().draw(batch);
@@ -622,8 +619,8 @@ public class MyGdxGame extends ApplicationAdapter {
         checkObstaclesLevel3(userCar);
         checkGrassLevel3(userCar);
         checkCarCollision(userCar, 3);
-        checkOilStains3(userCar);
-        checkOilStains3Ai(aiCar,aiCar2,aiCar3);
+        checkOilSpills3(userCar);
+        checkOilSpills3Ai(aiCar,aiCar2,aiCar3);
         if (numberOfLaps3 == 7) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.Level3Completed;
@@ -635,8 +632,8 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         powerUpLevel3(userCar);
 
-        for (Obstacle oilStain : oilStains3) {
-            oilStain.draw(batch);
+        for (Obstacle oilSpill : oilSpills3) {
+            oilSpill.draw(batch);
         }
         userCar.getSprite().draw(batch);
         userCar.updatePosition();
@@ -782,34 +779,34 @@ public class MyGdxGame extends ApplicationAdapter {
         checkpoints3.add(checkpoint6);
         checkpoints3.add(checkpoint7);
     }
-    public void createOilStains()
+    public void createOilSpills()
     {
         stain11 = new Obstacle("oilStain.png", 750, 620, 50, 50);
         stain12 = new Obstacle("oilStain.png", 525, 225, 50, 50);
         //stain13 = new Obstacle("oilStain.png", 900, 370, 50, 50);
-        oilStains.add(stain11);
-        oilStains.add(stain12);
-        //oilStains.add(stain13);
+        oilSpills.add(stain11);
+        oilSpills.add(stain12);
+        //oilSpills.add(stain13);
     }
-    public void createOilStains2()
+    public void createOilSpills2()
     {
         stain21 = new Obstacle("oilStain.png", 750, 615, 50, 50);
         stain22 = new Obstacle("oilStain.png", 450, 265, 50, 50);
         stain23 = new Obstacle("oilStain.png", 1150, 370, 50, 50);
-        oilStains2.add(stain21);
-        oilStains2.add(stain22);
-        oilStains2.add(stain23);
+        oilSpills2.add(stain21);
+        oilSpills2.add(stain22);
+        oilSpills2.add(stain23);
     }
-    public void createOilStains3()
+    public void createOilSpills3()
     {
         stain31 = new Obstacle("oilStain.png", 670, 600, 50, 50);
         stain32 = new Obstacle("oilStain.png", 700, 285, 50, 50);
         stain33 = new Obstacle("oilStain.png", 1150, 370, 50, 50);
         stain34 = new Obstacle("oilStain.png", 400, 370, 50, 50);
-        oilStains3.add(stain31);
-        oilStains3.add(stain32);
-        oilStains3.add(stain33);
-        oilStains3.add(stain34);
+        oilSpills3.add(stain31);
+        oilSpills3.add(stain32);
+        oilSpills3.add(stain33);
+        oilSpills3.add(stain34);
     }
 
     public void createGrass() {
@@ -995,50 +992,50 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
     }
-    public void checkOilStains(UserCar userCar) {
-        for (int i = 0; i < oilStains.size(); i++) {
+    public void checkOilSpills(UserCar userCar) {
+        for (int i = 0; i < oilSpills.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (userCar.collidesWith(oilStains.get(i).getCollisionRectangle())) {
+            if (userCar.collidesWith(oilSpills.get(i).getCollisionRectangle())) {
                 userCar.spinOnStain(leftOrRight, 0.75);
                 //userCar.setAngle(userCar.tempAngle);
             }
         }
     }
-    public void checkOilStainsAi(AiCar aiCar) {
-        for (int i = 0; i < oilStains.size(); i++) {
+    public void checkOilSpillsAi(AiCar aiCar) {
+        for (int i = 0; i < oilSpills.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (aiCar.collidesWith(oilStains.get(i).getCollisionRectangle())) {
+            if (aiCar.collidesWith(oilSpills.get(i).getCollisionRectangle())) {
                 aiCar.spinOnStain(leftOrRight, 4);
             }
         }
     }
-    public void checkOilStains2(UserCar userCar) {
-        for (int i = 0; i < oilStains2.size(); i++) {
+    public void checkOilSpills2(UserCar userCar) {
+        for (int i = 0; i < oilSpills2.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (userCar.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
+            if (userCar.collidesWith(oilSpills2.get(i).getCollisionRectangle())) {
 
                 userCar.spinOnStain(leftOrRight, 0.75);
                 //userCar.setAngle(userCar.tempAngle);
             }
         }
     }
-    public void checkOilStains2Ai(AiCar aiCar, AiCar aiCar2) {
-        for (int i = 0; i < oilStains2.size(); i++) {
+    public void checkOilSpills2Ai(AiCar aiCar, AiCar aiCar2) {
+        for (int i = 0; i < oilSpills2.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (aiCar.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
+            if (aiCar.collidesWith(oilSpills2.get(i).getCollisionRectangle())) {
                 aiCar.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
-            if (aiCar2.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
+            if (aiCar2.collidesWith(oilSpills2.get(i).getCollisionRectangle())) {
                 aiCar2.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
         }
     }
-    public void checkOilStains3(UserCar userCar) {
-        for (int i = 0; i < oilStains3.size(); i++) {
+    public void checkOilSpills3(UserCar userCar) {
+        for (int i = 0; i < oilSpills3.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (userCar.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+            if (userCar.collidesWith(oilSpills3.get(i).getCollisionRectangle())) {
 
                 userCar.spinOnStain(leftOrRight, 0.75);
                 //userCar.setAngle(userCar.tempAngle);
@@ -1046,18 +1043,18 @@ public class MyGdxGame extends ApplicationAdapter {
         }
     }
 
-    public void checkOilStains3Ai(AiCar aiCar, AiCar aiCar2, AiCar aiCar3) {
-        for (int i = 0; i < oilStains3.size(); i++) {
+    public void checkOilSpills3Ai(AiCar aiCar, AiCar aiCar2, AiCar aiCar3) {
+        for (int i = 0; i < oilSpills3.size(); i++) {
             leftOrRight = r.nextInt(2);
-            if (aiCar.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+            if (aiCar.collidesWith(oilSpills3.get(i).getCollisionRectangle())) {
                 aiCar.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
-            if (aiCar2.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+            if (aiCar2.collidesWith(oilSpills3.get(i).getCollisionRectangle())) {
                 aiCar2.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
-            if (aiCar3.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+            if (aiCar3.collidesWith(oilSpills3.get(i).getCollisionRectangle())) {
                 aiCar3.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
