@@ -16,11 +16,16 @@ public class Timer {
     private long elapsedTime;
     String time;
 
+
+
     public Timer() {
         timerFont = new BitmapFont();
         timerFont.setColor(Color.WHITE);
+        timerFont.getData().setScale(2,1);
         batch = new SpriteBatch();
         startTime = TimeUtils.millis();
+
+
 
         // timerFont.getData().setScale(2,1);
 
@@ -34,6 +39,6 @@ public class Timer {
                 TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
                 TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)), elapsedTime % 100);
-        timerFont.draw(batch, time, 190, 40);
+        timerFont.draw(batch, time, 30, 90);
     }
 }

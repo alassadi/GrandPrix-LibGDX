@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-
 import static com.mygdx.game.MyGdxGame.powerUpFont;
 
 /**

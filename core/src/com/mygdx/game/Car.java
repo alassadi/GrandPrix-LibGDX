@@ -2,10 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -21,6 +19,7 @@ public class Car {
     private float velocity = 0;
     private Sprite sprite;
     private final int SHRINK_COLLISION_RADIUS;
+    public boolean notOnStain = true;
 
     double rotationRate = Math.PI / 70; // how fast it turns
 
@@ -180,21 +179,22 @@ public class Car {
         }
     }
 
-    public void spinOnStain(int leftOrRight)
+    public void spinOnStain(int leftOrRight, double spinFactor)
     {
         if (leftOrRight<1) {
-            setAngle(getAngle() - rotationRate*0.75);
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                getSprite().setRotation((float) getAngle() * (float) 59.3);
-            }
-            else {
-                //tempAngle = getAngle() + rotationRate;
-                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    setAngle(getAngle() + rotationRate*0.75);
-                    getSprite().setRotation((float) getAngle() * (float) 59.3);
-                }
-            }
+            setAngle(getAngle() - Math.PI / 70 * spinFactor);
+//            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
+//            }
         }
+        else {
+            //tempAngle = getAngle() + rotationRate;
+//            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            setAngle(getAngle() + Math.PI / 70 * spinFactor);
+            getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
+//            }
+        }
+
     }
 
     public void forceBreak() {
