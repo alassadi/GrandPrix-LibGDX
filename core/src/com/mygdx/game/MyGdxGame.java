@@ -268,10 +268,10 @@ public class MyGdxGame extends ApplicationAdapter {
         aiCar = new AiCar("AiCar1.png", aiCarPositionX, aiCarPositionY);
     }
     public void createAiCar2() {
-        aiCar2 = new AiCar("AiCar1.png", aiCar2PositionX, aiCar2PositionY);
+        aiCar2 = new AiCar("pitstop_car_9.png", aiCar2PositionX, aiCar2PositionY);
     }
     public void createAiCar3() {
-        aiCar3 = new AiCar("AiCar1.png", aiCar3PositionX, aiCar3PositionY);
+        aiCar3 = new AiCar("pitstop_car_10.png", aiCar3PositionX, aiCar3PositionY);
     }
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -364,6 +364,9 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void renderGamePage() {
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+            gameState = GameState.LevelCompleted;
+        }
         inGame_music.play();
         checkInput();
         createCheckPoints();
@@ -433,6 +436,9 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void renderLevel2() {
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+            gameState = GameState.Level2Completed;
+        }
         inGame_music.play();
         createCheckPoints2();
         checkRoutePoints2(userCar);
