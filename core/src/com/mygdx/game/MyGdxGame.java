@@ -608,10 +608,12 @@ public class MyGdxGame extends ApplicationAdapter {
         speedMeter.draw(batch, speed,200,150);
         timer3.drawTime(batch);
         font.draw(batch, driver, 30, 160);
+        scoreBoard.draw(batch, lapScore, 30,140);
 
 
         checkObstaclesLevel3(userCar);
         checkGrassLevel3(userCar);
+        checkCarCollision(userCar, 3);
         checkOilSpills3(userCar);
         checkOilSpills3Ai(aiCar,aiCar2,aiCar3);
         if (numberOfLaps3 == 7) {                         /////////////////////////
@@ -639,10 +641,12 @@ public class MyGdxGame extends ApplicationAdapter {
         aiCar.updatePosition();
         aiCar2.getSprite().draw(batch);
         aiCar2.updatePosition();
+        aiCar3.getSprite().draw(batch);
+        aiCar3.updatePosition();
         ArrayList<Vector2> waypoints3 = levelThreeWaypoints();
         aiCar.Route(waypoints3, 2.75, rotationRate*1.5);
         aiCar2.Route(waypoints3, 2.5, rotationRate*1.5);
-
+        aiCar3.Route(waypoints3, 2.4, rotationRate*1.5);
         batch.end();
 
     }
@@ -1257,14 +1261,14 @@ public class MyGdxGame extends ApplicationAdapter {
 
                 lapScore= String.format("%s", lapTimes.get(numberOfLaps-1));
                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
-                System.out.print("LAP TIME: " + lapTimes.get(numberOfLaps-1));
+
             }
         }
     }
 
     public void speedMeter(){
 
-            float a= (float) userCar.getVelocity();
+            float a = (float) userCar.getVelocity();
 
             speed = String.format("%.0f"+" mph",a*50);
     }
@@ -1284,7 +1288,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 lapTimes2.add(timer2.time);
                 lapScore= String.format("%s", lapTimes2.get(numberOfLaps2-1));
                 // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
-                System.out.print(lapTimes2.get(numberOfLaps2 - 1));
+
             }
         }
     }
@@ -1305,7 +1309,6 @@ public class MyGdxGame extends ApplicationAdapter {
                     lapTimes2.add(timer3.time);
                     lapScore= String.format("%s", lapTimes2.get(numberOfLaps3-1));
                     // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
-                    System.out.print(lapTimes3.get(numberOfLaps3 - 1));
                 }
             }
         }
@@ -1346,6 +1349,7 @@ public class MyGdxGame extends ApplicationAdapter {
         bitmapFontFinishTime.dispose();
         backGround2.dispose();
         backGroundLevel3.dispose();
+        scoreBoard.dispose();
     }
 }
 
