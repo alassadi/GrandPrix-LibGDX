@@ -11,6 +11,8 @@ import java.util.Random;
 public class AiCar extends Car {
     int i = 0;
     Random r = new Random();
+    float destination=0;
+
     public AiCar(String textureFileName, float x, float y) {
         super(textureFileName, x, y);
         getSprite().setOriginCenter();
@@ -30,7 +32,8 @@ public class AiCar extends Car {
 //            System.out.print("angle: " + getAngle() * MathUtils.radiansToDegrees + ", ");
 //            System.out.print("Destination: " + ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f) + "; ");
 //        }
-            if ((float) getAngle() * MathUtils.radiansToDegrees < ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f) //180/ 270
+        destination = (float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f;
+            if ((float) getAngle() * MathUtils.radiansToDegrees < destination //180/ 270
             //        && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>0.5
                     ) {
                 setAngle(getAngle() + rotationRate);
@@ -39,7 +42,7 @@ public class AiCar extends Car {
                 if (getVelocity() > 2)
                     setVelocity(getVelocity() - (float)0.05);
             }
-            else if ((float) getAngle() * MathUtils.radiansToDegrees > ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 120.0d / Math.PI) + 270.0f)
+            else if ((float) getAngle() * MathUtils.radiansToDegrees > destination
             //        && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>0.5
                     ) {
 
@@ -49,7 +52,7 @@ public class AiCar extends Car {
                 if (getVelocity() > 2)
                     setVelocity(getVelocity() - (float)0.05);
             }
-            else if ((float) getAngle() * MathUtils.radiansToDegrees == ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f)) {
+            else if ((float) getAngle() * MathUtils.radiansToDegrees == destination) {
                 setAngle(getAngle());
                 getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
             }
