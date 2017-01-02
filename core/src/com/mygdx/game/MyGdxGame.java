@@ -520,8 +520,6 @@ public class MyGdxGame extends ApplicationAdapter {
             createAiCar2();
             createTimer2();
             backGround.dispose();
-
-            driver = "";
             gameState = GameState.Level2;
         }
 
@@ -533,7 +531,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         userCar.fullStop();
         batch.draw(levelCompleted, 250, 355);
-        driver=" ";
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             intro_music.stop();
@@ -556,6 +554,7 @@ public class MyGdxGame extends ApplicationAdapter {
             createAiCar2();
             createTimer3();
             driver = "";
+            lapScore=" ";
             backGround2.dispose();
             gameState = GameState.Level3;
         }
