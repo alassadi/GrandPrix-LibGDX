@@ -781,28 +781,28 @@ public class MyGdxGame extends ApplicationAdapter {
     }
     public void createOilSpills()
     {
-        stain11 = new Obstacle("oilStain.png", 750, 620, 50, 50);
-        stain12 = new Obstacle("oilStain.png", 525, 225, 50, 50);
-        //stain13 = new Obstacle("oilStain.png", 900, 370, 50, 50);
+        stain11 = new Obstacle("oilSpill.png", 750, 620, 50, 50);
+        stain12 = new Obstacle("oilSpill.png", 525, 225, 50, 50);
+        //stain13 = new Obstacle("oilSpill.png", 900, 370, 50, 50);
         oilSpills.add(stain11);
         oilSpills.add(stain12);
         //oilSpills.add(stain13);
     }
     public void createOilSpills2()
     {
-        stain21 = new Obstacle("oilStain.png", 750, 615, 50, 50);
-        stain22 = new Obstacle("oilStain.png", 450, 265, 50, 50);
-        stain23 = new Obstacle("oilStain.png", 1150, 370, 50, 50);
+        stain21 = new Obstacle("oilSpill.png", 750, 615, 50, 50);
+        stain22 = new Obstacle("oilSpill.png", 450, 265, 50, 50);
+        stain23 = new Obstacle("oilSpill.png", 1150, 370, 50, 50);
         oilSpills2.add(stain21);
         oilSpills2.add(stain22);
         oilSpills2.add(stain23);
     }
     public void createOilSpills3()
     {
-        stain31 = new Obstacle("oilStain.png", 670, 600, 50, 50);
-        stain32 = new Obstacle("oilStain.png", 700, 285, 50, 50);
-        stain33 = new Obstacle("oilStain.png", 1150, 370, 50, 50);
-        stain34 = new Obstacle("oilStain.png", 400, 370, 50, 50);
+        stain31 = new Obstacle("oilSpill.png", 670, 600, 50, 50);
+        stain32 = new Obstacle("oilSpill.png", 700, 285, 50, 50);
+        stain33 = new Obstacle("oilSpill.png", 1150, 370, 50, 50);
+        stain34 = new Obstacle("oilSpill.png", 400, 370, 50, 50);
         oilSpills3.add(stain31);
         oilSpills3.add(stain32);
         oilSpills3.add(stain33);
