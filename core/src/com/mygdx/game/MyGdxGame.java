@@ -552,6 +552,7 @@ public class MyGdxGame extends ApplicationAdapter {
             //aiCarPositionY = 625f;
             createAiCar();
             createAiCar2();
+            createAiCar3();
             createTimer3();
             driver = "";
             lapScore=" ";
@@ -1254,11 +1255,8 @@ public class MyGdxGame extends ApplicationAdapter {
         if (checkArray(arr)) {
             if (checkFinishLine(arr)) {
                 numberOfLaps++;
-                System.out.println(String.format("done with lap %d.", (numberOfLaps)));
                 driver = String.format("Finished Lap %d." ,numberOfLaps);
-                System.out.print("driver value:" + driver);
                 lapTimes.add(timer.time);
-
                 lapScore= String.format("%s", lapTimes.get(numberOfLaps-1));
                 //HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
 
@@ -1288,7 +1286,6 @@ public class MyGdxGame extends ApplicationAdapter {
                 lapTimes2.add(timer2.time);
                 lapScore= String.format("%s", lapTimes2.get(numberOfLaps2-1));
                 // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
-
             }
         }
     }
@@ -1303,13 +1300,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
         if (checkArray3(arr3)) {
             if (checkFinishLine3(arr3)) {
-                if (checkFinishLine(arr3)) {
                     numberOfLaps3++;
                     driver = String.format("Finished Lap %d.", numberOfLaps3);
-                    lapTimes2.add(timer3.time);
-                    lapScore= String.format("%s", lapTimes2.get(numberOfLaps3-1));
-                    // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1.
-                }
+                    lapTimes3.add(timer3.time);
+                    lapScore= String.format("%s", lapTimes3.get(numberOfLaps3-1));
+                    // HERE IS WHERE THE CAR FINISH THE RACE FOR LEVEL 1
             }
         }
     }
