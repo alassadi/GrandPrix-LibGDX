@@ -46,13 +46,16 @@ public class MyGdxGame extends ApplicationAdapter {
 
     AiCar aiCar;
     AiCar aiCar2;
+    AiCar aiCar3;
     Texture gpLogo;
     float userCarPositionX=550;
     float userCarPositionY=620;
     float aiCarPositionX = 450f;
-    float aiCarPositionY = 625f;
-    float aiCar2PositionX = 350f;
-    float aiCar2PositionY = 625f;
+    float aiCarPositionY = 635f;
+    float aiCar2PositionX = 375f;
+    float aiCar2PositionY = 635f;
+    float aiCar3PositionX = 450f;
+    float aiCar3PositionY = 595f;
     ArrayList<Obstacle> checkpoints;
     ArrayList<Obstacle> checkpoints2;
     ArrayList<Obstacle> checkpoints3;
@@ -116,18 +119,18 @@ public class MyGdxGame extends ApplicationAdapter {
     private ArrayList<Vector2> levelOneWaypoints() {
         ArrayList<Vector2> waypoints = new ArrayList<Vector2>();
         waypoints.add(new Vector2(1000, 640));
-        waypoints.add(new Vector2(1095, 550));
-        waypoints.add(new Vector2(875, 450));
+        waypoints.add(new Vector2(1045, 550));
+        waypoints.add(new Vector2(925, 450));
         waypoints.add(new Vector2(925, 225));
-        waypoints.add(new Vector2(1095, 125));
-        waypoints.add(new Vector2(925, 50));
-        waypoints.add(new Vector2(600, 100));
-        waypoints.add(new Vector2(495, 175));
-        waypoints.add(new Vector2(480, 355));
-        waypoints.add(new Vector2(180, 325));
-        waypoints.add(new Vector2(120, 425));
-        waypoints.add(new Vector2(170, 625));
-        waypoints.add(new Vector2(220, 695));
+        waypoints.add(new Vector2(1045, 175));
+        waypoints.add(new Vector2(925, 110));
+        waypoints.add(new Vector2(590, 120));
+        waypoints.add(new Vector2(580, 255));
+        waypoints.add(new Vector2(480, 265));
+        waypoints.add(new Vector2(190, 315));
+        waypoints.add(new Vector2(110, 425));
+        waypoints.add(new Vector2(180, 625));
+        waypoints.add(new Vector2(250, 695));
 
         return waypoints;
     }
@@ -230,6 +233,7 @@ public class MyGdxGame extends ApplicationAdapter {
         createUserCar();
         createAiCar();
         createAiCar2();
+        createAiCar3();
         createCheckPoints();
         createObstacles();
         createGrass();
@@ -254,7 +258,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     public void createUserCar() {
-        userCar = new UserCar("userCar1.png", 550, 620, 4);
+        userCar = new UserCar("userCar1.png", 375f, 595f, 4);
     }
 
     /*public void createUserCar2() {
@@ -266,6 +270,9 @@ public class MyGdxGame extends ApplicationAdapter {
     }
     public void createAiCar2() {
         aiCar2 = new AiCar("AiCar1.png", aiCar2PositionX, aiCar2PositionY);
+    }
+    public void createAiCar3() {
+        aiCar3 = new AiCar("AiCar1.png", aiCar3PositionX, aiCar3PositionY);
     }
     public void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -345,6 +352,8 @@ public class MyGdxGame extends ApplicationAdapter {
             intro_music.stop();
             carEngine1.stop();
             carEngine2.stop();
+            userCar.setX(375);
+            userCar.setY(615);
         }
 
         // if escape key was pressed in the welcome page it will got to the game over page
@@ -405,6 +414,8 @@ public class MyGdxGame extends ApplicationAdapter {
         powerUp(userCar);
         checkOilStains(userCar);
         checkOilStainsAi(aiCar);
+        checkCarCollision(userCar, 1);
+        //checkAiCarCollision(userCar, 1);  //we don't use this for now, because it does not work well with the previous one (both are triggered at the same time)
         for (Obstacle powerup : powerUps) {
             powerup.draw(batch);
         }
@@ -448,7 +459,10 @@ public class MyGdxGame extends ApplicationAdapter {
             // game state is level complete
             gameState = GameState.Level2Completed;
         }
+        checkCarCollision(userCar, 2);
         checkOilStains2(userCar);
+        checkOilStains2Ai(aiCar, aiCar2);
+
         powerUpLevel2(userCar);
 
         for (Obstacle powerup : powerUpsLevel2) {
@@ -463,6 +477,8 @@ public class MyGdxGame extends ApplicationAdapter {
         checkGrassLevel2(userCar);
         aiCar.getSprite().draw(batch);
         aiCar.updatePosition();
+        aiCar2.getSprite().draw(batch);
+        aiCar2.updatePosition();
         for (Obstacle outSideItemLevel2 : outSideItemsLevel2 ) {
             outSideItemLevel2.draw(batch);
         }
@@ -471,6 +487,7 @@ public class MyGdxGame extends ApplicationAdapter {
 //        aiCar2.updatePosition();
         ArrayList<Vector2> waypoints2 = levelTwoWaypoints();
         aiCar.Route(waypoints2, 3, rotationRate*1.5);
+        aiCar2.Route(waypoints2, 2.8, rotationRate*1.5);
 //        aiCar2.Route(waypoints2);
         // here to transit to level 2 complete
         batch.end();
@@ -496,13 +513,14 @@ public class MyGdxGame extends ApplicationAdapter {
             carEngine1.stop();
             userCar.fullStop();
             userCar.fullStop();
-            userCar.setX(450);
-            userCar.setY(580);
+            userCar.setX(375);
+            userCar.setY(595);
 
             //aiCarPositionX = 450f;
             // aiCarPositionY = 625f;
            // aiCarPositionY = 625f;
             createAiCar();
+            createAiCar2();
             createTimer2();
             driver = "";
             gameState = GameState.Level2;
@@ -529,10 +547,12 @@ public class MyGdxGame extends ApplicationAdapter {
             carEngine1.stop();
             carEngine2.stop();
             userCar.fullStop();
-            userCar.setX(450);
-            userCar.setY(580);
+            userCar.setX(375f);
+            userCar.setY(595f);
             //aiCarPositionX = 450f;
             //aiCarPositionY = 625f;
+            createAiCar();
+            createAiCar2();
             createTimer3();
             driver = "";
             gameState = GameState.Level3;
@@ -601,7 +621,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
         checkObstaclesLevel3(userCar);
         checkGrassLevel3(userCar);
+        checkCarCollision(userCar, 3);
         checkOilStains3(userCar);
+        checkOilStains3Ai(aiCar,aiCar2,aiCar3);
         if (numberOfLaps3 == 7) {                         /////////////////////////
             // game state is level complete
             gameState = GameState.Level3Completed;
@@ -622,10 +644,12 @@ public class MyGdxGame extends ApplicationAdapter {
         aiCar.updatePosition();
         aiCar2.getSprite().draw(batch);
         aiCar2.updatePosition();
+        aiCar3.getSprite().draw(batch);
+        aiCar3.updatePosition();
         ArrayList<Vector2> waypoints3 = levelThreeWaypoints();
-        aiCar.Route(waypoints3, 2.75, rotationRate*1.5);
+        aiCar.Route(waypoints3, 2.7, rotationRate*1.5);
         aiCar2.Route(waypoints3, 2.5, rotationRate*1.5);
-
+        aiCar3.Route(waypoints3, 2.4, rotationRate*1.5);
         batch.end();
 
     }
@@ -895,6 +919,43 @@ public class MyGdxGame extends ApplicationAdapter {
         }
     }
 
+    public void checkCarCollision(UserCar userCar, int numberOfAiCars) {
+        if (userCar.collidesWith(aiCar.getCollisionRectangle()) && numberOfAiCars >= 1) {
+            userCar.fullStop();
+            aiCar.setX(aiCar.getX() + aiCar.getX()-userCar.getX());
+            aiCar.setY(aiCar.getY() + aiCar.getY()-userCar.getY());
+        }
+        if (userCar.collidesWith(aiCar2.getCollisionRectangle())&& numberOfAiCars >= 2) {
+            userCar.fullStop();
+            aiCar2.setX(aiCar2.getX() + aiCar2.getX()-userCar.getX());
+            aiCar2.setY(aiCar2.getY() + aiCar2.getY()-userCar.getY());
+        }
+        if (userCar.collidesWith(aiCar3.getCollisionRectangle())&& numberOfAiCars >= 3) {
+            userCar.fullStop();
+            aiCar3.setX(aiCar3.getX() + aiCar3.getX()-userCar.getX());
+            aiCar3.setY(aiCar3.getY() + aiCar3.getY()-userCar.getY());
+        }
+    }
+
+    //This function does not work well along with the previous one so we are not going to use it for now
+    public void checkAiCarCollision(UserCar userCar, int numberOfAiCars) {
+        if (aiCar.collidesWith(userCar.getCollisionRectangle()) && numberOfAiCars >= 1) {
+            aiCar.fullStop();
+            userCar.setX(aiCar.getX() + userCar.getX()-aiCar.getX());
+            userCar.setY(userCar.getY() + userCar.getY()-aiCar.getY());
+        }
+        if (aiCar2.collidesWith(userCar.getCollisionRectangle())&& numberOfAiCars >= 2) {
+            aiCar2.fullStop();
+            userCar.setX(aiCar2.getX() + userCar.getX()-aiCar2.getX());
+            userCar.setY(userCar.getY() + userCar.getY()-aiCar2.getY());
+        }
+        if (userCar.collidesWith(aiCar3.getCollisionRectangle())&& numberOfAiCars >= 3) {
+            userCar.fullStop();
+            aiCar3.setX(aiCar3.getX() + aiCar3.getX()-userCar.getX());
+            aiCar3.setY(aiCar3.getY() + aiCar3.getY()-userCar.getY());
+        }
+    }
+
     public void checkObstaclesLevel2(UserCar userCar){
         for (int i= 0; i<outSideItemsLevel2.size(); i++){
             if (userCar.collidesWith(outSideItemsLevel2.get(i).getCollisionRectangle())){
@@ -947,12 +1008,7 @@ public class MyGdxGame extends ApplicationAdapter {
         for (int i = 0; i < oilStains.size(); i++) {
             leftOrRight = r.nextInt(2);
             if (aiCar.collidesWith(oilStains.get(i).getCollisionRectangle())) {
-                aiCar.notOnStain = false;
-                aiCar.spinOnStain(leftOrRight, 3);
-                //userCar.setAngle(userCar.tempAngle);
-            }
-            else {
-                aiCar.notOnStain = true;
+                aiCar.spinOnStain(leftOrRight, 4);
             }
         }
     }
@@ -962,6 +1018,19 @@ public class MyGdxGame extends ApplicationAdapter {
             if (userCar.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
 
                 userCar.spinOnStain(leftOrRight, 0.75);
+                //userCar.setAngle(userCar.tempAngle);
+            }
+        }
+    }
+    public void checkOilStains2Ai(AiCar aiCar, AiCar aiCar2) {
+        for (int i = 0; i < oilStains2.size(); i++) {
+            leftOrRight = r.nextInt(2);
+            if (aiCar.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
+                aiCar.spinOnStain(leftOrRight, 4);
+                //userCar.setAngle(userCar.tempAngle);
+            }
+            if (aiCar2.collidesWith(oilStains2.get(i).getCollisionRectangle())) {
+                aiCar2.spinOnStain(leftOrRight, 4);
                 //userCar.setAngle(userCar.tempAngle);
             }
         }
@@ -977,6 +1046,23 @@ public class MyGdxGame extends ApplicationAdapter {
         }
     }
 
+    public void checkOilStains3Ai(AiCar aiCar, AiCar aiCar2, AiCar aiCar3) {
+        for (int i = 0; i < oilStains3.size(); i++) {
+            leftOrRight = r.nextInt(2);
+            if (aiCar.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+                aiCar.spinOnStain(leftOrRight, 4);
+                //userCar.setAngle(userCar.tempAngle);
+            }
+            if (aiCar2.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+                aiCar2.spinOnStain(leftOrRight, 4);
+                //userCar.setAngle(userCar.tempAngle);
+            }
+            if (aiCar3.collidesWith(oilStains3.get(i).getCollisionRectangle())) {
+                aiCar3.spinOnStain(leftOrRight, 4);
+                //userCar.setAngle(userCar.tempAngle);
+            }
+        }
+    }
     public void createFinishLine() {
         finishLine = new ArrayList<Obstacle>(1);
         finishLine1 = new Obstacle("wall_0.jpg", 550, 615, 5, 96);
@@ -1207,7 +1293,7 @@ public class MyGdxGame extends ApplicationAdapter {
         }
 
         if (checkArray2(arr2)) {
-            if (checkFinishLine(arr2)) {
+            if (checkFinishLine2(arr2)) {
                 numberOfLaps2++;
                 System.out.println(String.format("done with lap %d.", (numberOfLaps2)));
                 driver = String.format("Finished Lap %d.", numberOfLaps2);

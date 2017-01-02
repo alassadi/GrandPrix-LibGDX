@@ -24,9 +24,15 @@ public class AiCar extends Car {
     }
 
     public void Route(ArrayList<Vector2> waypoints, double speed, double rotationRate) {
-//        if (notOnStain == true){
+
+//  This is used just to check a bug where the aiCars are not turning in the right direction
+//        if (i >=9&&i <=11) {
+//            System.out.print("angle: " + getAngle() * MathUtils.radiansToDegrees + ", ");
+//            System.out.print("Destination: " + ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f) + "; ");
+//        }
             if ((float) getAngle() * MathUtils.radiansToDegrees < ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f)
-                    && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>5 ) {
+            //        && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>0.5
+                    ) {
                 setAngle(getAngle() + rotationRate);
                 getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
 
@@ -34,7 +40,8 @@ public class AiCar extends Car {
                     setVelocity(getVelocity() - (float)0.05);
             }
             else if ((float) getAngle() * MathUtils.radiansToDegrees > ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f)
-                    && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>5 ) {
+            //        && Math.abs((float) getAngle() * MathUtils.radiansToDegrees / ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f))>0.5
+                    ) {
 
                 setAngle(getAngle() - rotationRate);
                 getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
@@ -42,6 +49,11 @@ public class AiCar extends Car {
                 if (getVelocity() > 2)
                     setVelocity(getVelocity() - (float)0.05);
             }
+            else if ((float) getAngle() * MathUtils.radiansToDegrees == ((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f)) {
+                setAngle(getAngle());
+                getSprite().setRotation((float) getAngle() * MathUtils.radiansToDegrees);
+            }
+
 
 
 //        setAngle((float) (Math.atan2(waypoints.get(i).x - getSprite().getX(), -(waypoints.get(i).y - getSprite().getY())) * 180.0d / Math.PI) + 270.0f);
@@ -53,9 +65,9 @@ public class AiCar extends Car {
 //        if (Math.abs(waypoints.get(i).x - getSprite().getX())>35 || Math.abs(waypoints.get(i).y - getSprite().getY())>35) {
 //
 //        }
-        if (Math.abs(waypoints.get(i).x - getSprite().getX()) < 50 && Math.abs(waypoints.get(i).y - getSprite().getY()) < 50) {
+        if (Math.abs(waypoints.get(i).x - getSprite().getX()) < 45 && Math.abs(waypoints.get(i).y - getSprite().getY()) < 45) {
             i++;
-            //System.out.print(i);
+            System.out.print(i);
         }
         if (i == waypoints.size()) {
             i = 0;
